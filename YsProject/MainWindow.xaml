@@ -1,0 +1,122 @@
+﻿<Window x:Class="YsProject.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        xmlns:local="clr-namespace:YsProject"
+        mc:Ignorable="d"
+        TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+        TextElement.FontWeight="Regular"
+        TextElement.FontSize="13"
+        TextOptions.TextFormattingMode="Ideal"
+        TextOptions.TextRenderingMode="Auto"
+        Background="{DynamicResource MaterialDesignPaper}"
+        Title="MainWindow" Height="800" Width="1100"
+        WindowStartupLocation="CenterScreen" WindowStyle="None"
+        Loaded="Window_Loaded">
+    <WindowChrome.WindowChrome>
+        <WindowChrome CaptionHeight="70" ResizeBorderThickness="0"/>
+    </WindowChrome.WindowChrome>
+    <materialDesign:DialogHost>
+        <materialDesign:DrawerHost IsLeftDrawerOpen="{Binding ElementName=MenuToggleButton, Path=IsChecked}">
+            <materialDesign:DrawerHost.LeftDrawerContent>
+                <DockPanel x:Name="menuDock" MinWidth="220" WindowChrome.IsHitTestVisibleInChrome="True">
+                    <ToggleButton
+                        Style="{StaticResource MaterialDesignHamburgerToggleButton}" 
+                        DockPanel.Dock="Top"
+                        HorizontalAlignment="Right" 
+                        Margin="16"
+                        IsChecked="{Binding ElementName=MenuToggleButton, Path=IsChecked, Mode=TwoWay}"/>
+                    <TextBox 
+                        DockPanel.Dock="Top"
+                        Margin="16, 4"
+                        Width="200"
+                        BorderThickness="0"
+                        materialDesign:HintAssist.Hint="Search"
+                        materialDesign:HintAssist.IsFloating="True"
+                        materialDesign:TextFieldAssist.HasClearButton="True"
+                        materialDesign:TextFieldAssist.HasOutlinedTextField="True"
+                        materialDesign:TextFieldAssist.DecorationVisibility="Collapsed"
+                        materialDesign:TextFieldAssist.TextFieldCornerRadius="4"/>
+                    <Expander x:Name="expWbs" HorizontalAlignment="Stretch" Header="Wbs" DockPanel.Dock="Top">
+                        <ListBox Margin="16" ItemsSource="{Binding WbsItems}" PreviewMouseLeftButtonUp="MenuList_PreviewMouseLeftButtonUp">
+                            <ListBox.Resources>
+                                <Style TargetType="ScrollBar" BasedOn="{StaticResource MaterialDesignScrollBarMinimal}"/>
+                            </ListBox.Resources>
+                            <ListBox.ItemTemplate>
+                                <DataTemplate >
+                                    <TextBlock Text="{Binding Description}" Margin="32 0 32 0" />
+                                </DataTemplate>
+                            </ListBox.ItemTemplate>
+                        </ListBox>
+                    </Expander>
+                    <Expander x:Name="expApp" HorizontalAlignment="Stretch" Header="App" DockPanel.Dock="Top">
+                        <ListBox Margin="16" ItemsSource="{Binding AppItems}" PreviewMouseLeftButtonUp="MenuList_PreviewMouseLeftButtonUp">
+                            <ListBox.Resources>
+                                <Style TargetType="ScrollBar" BasedOn="{StaticResource MaterialDesignScrollBarMinimal}"/>
+                            </ListBox.Resources>
+                            <ListBox.ItemTemplate>
+                                <DataTemplate >
+                                    <TextBlock Text="{Binding Description}" Margin="32 0 32 0" />
+                                </DataTemplate>
+                            </ListBox.ItemTemplate>
+                        </ListBox>
+                    </Expander>
+                    <Expander x:Name="expWeb" HorizontalAlignment="Stretch" Header="Web" DockPanel.Dock="Top">
+                        <ListBox Margin="16" ItemsSource="{Binding WebItems}" PreviewMouseLeftButtonUp="MenuList_PreviewMouseLeftButtonUp">
+                            <ListBox.Resources>
+                                <Style TargetType="ScrollBar" BasedOn="{StaticResource MaterialDesignScrollBarMinimal}"/>
+                            </ListBox.Resources>
+                            <ListBox.ItemTemplate>
+                                <DataTemplate >
+                                    <TextBlock Text="{Binding Description}" Margin="32 0 32 0" />
+                                </DataTemplate>
+                            </ListBox.ItemTemplate>
+                        </ListBox>
+                    </Expander>
+                    <Expander x:Name="codHlp" HorizontalAlignment="Stretch" Header="Code Help" DockPanel.Dock="Top">
+                        <ListBox Margin="16" ItemsSource="{Binding CodItems}" PreviewMouseLeftButtonUp="MenuList_PreviewMouseLeftButtonUp">
+                            <ListBox.Resources>
+                                <Style TargetType="ScrollBar" BasedOn="{StaticResource MaterialDesignScrollBarMinimal}"/>
+                            </ListBox.Resources>
+                            <ListBox.ItemTemplate>
+                                <DataTemplate >
+                                    <TextBlock Text="{Binding Description}" Margin="32 0 32 0" />
+                                </DataTemplate>
+                            </ListBox.ItemTemplate>
+                        </ListBox>
+                    </Expander>
+                    <Grid/>
+                </DockPanel>
+            </materialDesign:DrawerHost.LeftDrawerContent>
+            <DockPanel>
+                <materialDesign:ColorZone Padding="16" Mode="PrimaryMid" DockPanel.Dock="Top" Height="70">
+                    <!-- Head -->
+                    <DockPanel>
+                        <!-- Left Button -->
+                        <ToggleButton x:Name="MenuToggleButton" Style="{StaticResource MaterialDesignHamburgerToggleButton}" WindowChrome.IsHitTestVisibleInChrome="True"/>
+                        <!-- Right Button -->
+                        <materialDesign:Badged DockPanel.Dock="Right" Badge="3" VerticalAlignment="Center" WindowChrome.IsHitTestVisibleInChrome="True">
+                            <materialDesign:PopupBox PlacementMode="BottomAndAlignRightEdges" VerticalAlignment="Center">
+                                <StackPanel>
+                                    <Button Content="Info"/>
+                                    <Separator/>
+                                    <Button Content="UserInfo"/>
+                                    <Separator/>
+                                    <Button Content="Close" Click="Button_Click"/>
+                                </StackPanel>
+                            </materialDesign:PopupBox>
+                        </materialDesign:Badged>
+                        <!-- Title -->
+                        <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="22" Text="Ys Project"/>
+                    </DockPanel>
+                </materialDesign:ColorZone>
+                <materialDesign:Snackbar MessageQueue="{materialDesign:MessageQueue}" DockPanel.Dock="Bottom" />
+                <!--<ScrollViewer materialDesign:ScrollViewerAssist.IsAutoHideEnabled="True">-->
+                <Frame Content="{Binding MainPage}" NavigationUIVisibility="Hidden"/>
+                <!--</ScrollViewer>-->
+            </DockPanel>
+        </materialDesign:DrawerHost>
+    </materialDesign:DialogHost>
+</Window>

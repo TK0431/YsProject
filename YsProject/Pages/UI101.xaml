@@ -1,0 +1,112 @@
+﻿<local:BasePage x:Class="YsProject.Pages.UI101"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+      xmlns:local="clr-namespace:YsProject.Pages"
+      xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+      TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+        TextElement.FontWeight="Regular"
+        TextElement.FontSize="13"
+        TextOptions.TextFormattingMode="Ideal"
+        TextOptions.TextRenderingMode="Auto"
+        Background="{DynamicResource MaterialDesignPaper}"
+        FontFamily="{DynamicResource MaterialDesignFont}"
+      mc:Ignorable="d" 
+      d:DesignHeight="450" d:DesignWidth="800">
+    <Grid Background="White">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="Auto"/>
+        </Grid.ColumnDefinitions>
+        <GroupBox Grid.Column="0" Header="Hwnd Info" Style="{DynamicResource MaterialDesignCardGroupBox}" Margin="16">
+            <GroupBox.HeaderTemplate>
+                <DataTemplate>
+                    <StackPanel Orientation="Horizontal">
+                        <materialDesign:PackIcon Kind="React" Height="32" Width="32" VerticalAlignment="Center" />
+                        <TextBlock Margin="8,0,0,0" VerticalAlignment="Center" Style="{StaticResource MaterialDesignSubtitle1TextBlock}" Text="{Binding}" />
+                    </StackPanel>
+                </DataTemplate>
+            </GroupBox.HeaderTemplate>
+            <DockPanel>
+                <TextBox DockPanel.Dock="Top" Margin="0 8"
+                    materialDesign:HintAssist.Hint="Search"
+                    materialDesign:TextFieldAssist.HasClearButton="True"
+                    materialDesign:TextFieldAssist.HasOutlinedTextField="True"
+                    materialDesign:TextFieldAssist.TextFieldCornerRadius="4"/>
+                <ScrollViewer materialDesign:ScrollViewerAssist.IsAutoHideEnabled="True" Margin="0 8">
+                    <TreeView>
+                        <TreeViewItem Header="Fruit">
+                            <TreeViewItem>
+                                <TreeViewItem.Header>
+                                    <StackPanel Orientation="Horizontal">
+                                        <materialDesign:PackIcon Kind="Radioactive" />
+                                        <TextBlock Margin="8 0 0 0">Apple</TextBlock>
+                                    </StackPanel>
+                                </TreeViewItem.Header>
+                            </TreeViewItem>
+                            <TreeViewItem Header="Banana" />
+                            <TreeViewItem Header="Grape">
+                                <TextBlock>
+                            <Run Text="Grapes for us" />
+                                </TextBlock>
+                            </TreeViewItem>
+                            <TreeViewItem Header="Peach" />
+                            <TreeViewItem Header="Pear" />
+                            <TreeViewItem Header="Strawberry" />
+                        </TreeViewItem>
+                        <TreeViewItem Header="OS" IsExpanded="True">
+                            <TreeViewItem Header="Amiga" />
+                            <TreeViewItem>
+                                <TreeViewItem.Header>
+                                    <StackPanel Orientation="Horizontal">
+                                        <materialDesign:PackIcon Kind="RadioTower" />
+                                        <TextBlock Margin="8 0 0 0">Android</TextBlock>
+                                    </StackPanel>
+                                </TreeViewItem.Header>
+                            </TreeViewItem>
+                            <TreeViewItem Header="iOS" />
+                            <TreeViewItem>
+                                <TreeViewItem.Header>
+                                    <StackPanel Orientation="Horizontal">
+                                        <materialDesign:PackIcon Kind="Recycle" />
+                                        <TextBlock Margin="8 0 0 0">Linux</TextBlock>
+                                    </StackPanel>
+                                </TreeViewItem.Header>
+                            </TreeViewItem>
+                            <TreeViewItem>
+                                <TreeViewItem.Header>
+                                    <StackPanel Orientation="Horizontal">
+                                        <materialDesign:PackIcon Kind="RadioboxMarked" />
+                                        <TextBlock Margin="8 0 0 0">Windows</TextBlock>
+                                    </StackPanel>
+                                </TreeViewItem.Header>
+                            </TreeViewItem>
+                        </TreeViewItem>
+                        <TreeViewItem Header="Empty" />
+                    </TreeView>
+                </ScrollViewer>
+            </DockPanel>
+        </GroupBox>
+        <GroupBox Grid.Column="1" Header="Control Info" Style="{DynamicResource MaterialDesignCardGroupBox}" Margin="16" Width="300">
+            <GroupBox.HeaderTemplate>
+                <DataTemplate>
+                    <StackPanel Orientation="Horizontal">
+                        <materialDesign:PackIcon Kind="Unity" Height="32" Width="32" VerticalAlignment="Center" />
+                        <TextBlock Margin="8,0,0,0" VerticalAlignment="Center" Style="{StaticResource MaterialDesignSubtitle1TextBlock}" Text="{Binding}" />
+                    </StackPanel>
+                </DataTemplate>
+            </GroupBox.HeaderTemplate>
+            <DockPanel>
+                <TextBox DockPanel.Dock="Top" materialDesign:HintAssist.Hint="Hwnd Id" Style="{StaticResource MaterialDesignFloatingHintTextBox}" VerticalAlignment="Center" IsReadOnly="True"/>
+                <TextBox DockPanel.Dock="Top" materialDesign:HintAssist.Hint="Hwnd Value" Style="{StaticResource MaterialDesignFloatingHintTextBox}" VerticalAlignment="Center"/>
+                <TextBox DockPanel.Dock="Top" materialDesign:HintAssist.Hint="Hwnd Point X" Style="{StaticResource MaterialDesignFloatingHintTextBox}" VerticalAlignment="Center" IsReadOnly="True"/>
+                <TextBox DockPanel.Dock="Top" materialDesign:HintAssist.Hint="Hwnd Point Y" Style="{StaticResource MaterialDesignFloatingHintTextBox}" VerticalAlignment="Center" IsReadOnly="True"/>
+                <TextBox DockPanel.Dock="Top" materialDesign:HintAssist.Hint="Hwnd Width" Style="{StaticResource MaterialDesignFloatingHintTextBox}" VerticalAlignment="Center" IsReadOnly="True"/>
+                <TextBox DockPanel.Dock="Top" materialDesign:HintAssist.Hint="Hwnd Height" Style="{StaticResource MaterialDesignFloatingHintTextBox}" VerticalAlignment="Center" IsReadOnly="True"/>
+                <Button DockPanel.Dock="Bottom" Content="Out"/>
+                <Grid/>
+            </DockPanel>
+        </GroupBox>
+    </Grid>
+</local:BasePage>

@@ -1,0 +1,90 @@
+﻿<local:BasePage x:Class="YsProject.Pages.UI001"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:YsProject.Pages"
+      xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+      TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+      TextElement.FontWeight="Regular"
+      TextElement.FontSize="13"
+      TextOptions.TextFormattingMode="Ideal"
+      TextOptions.TextRenderingMode="Auto"
+      Background="{DynamicResource MaterialDesignPaper}"
+      FontFamily="{DynamicResource MaterialDesignFont}"
+      mc:Ignorable="d" 
+      d:DesignHeight="450" d:DesignWidth="800"
+      Title="Wbs">
+    <DockPanel>
+        <ToolBarTray DockPanel.Dock="Top">
+            <ToolBar Style="{DynamicResource MaterialDesignToolBar}" ClipToBounds="False">
+                <Label Content="Project:" VerticalAlignment="Center" />
+                <ComboBox>
+                    <ComboBoxItem Content="KSK" />
+                    <ComboBoxItem IsSelected="True" Content="Delphi" />
+                </ComboBox>
+                <Separator />
+                <Button ToolTip="WBS">
+                    <materialDesign:PackIcon Kind="FileTableBoxMultiple" />
+                </Button>
+                <Button ToolTip="Save">
+                    <materialDesign:PackIcon Kind="ChartBar" />
+                </Button>
+                <Button ToolTip="Cut">
+                    <materialDesign:PackIcon Kind="BellAlert" />
+                </Button>
+                <Button ToolTip="Copy that stuff">
+                    <materialDesign:PackIcon Kind="Calculator" />
+                </Button>
+                <Button ToolTip="Copy that stuff">
+                    <materialDesign:PackIcon Kind="CardAccountDetails" />
+                </Button>
+                <Button ToolTip="Copy that stuff">
+                    <materialDesign:PackIcon Kind="FileMultiple" />
+                </Button>
+                <Separator />
+                <ListBox>
+                    <ListBoxItem ToolTip="This is a lonley toggle with TextBlock instead of icon">
+                        <TextBlock>W</TextBlock>
+                    </ListBoxItem>
+                </ListBox>
+                <Separator />
+                <ListBox SelectedIndex="0">
+                    <ListBox.ToolTip>
+                        <StackPanel>
+                            <TextBlock Text="MaterialDesignToolToggleFlatListBox" />
+                            <TextBlock Text="Exclusive selection" />
+                            <TextBlock Text="ListBoxAssist.IsToggle allows more natural toggle behaviour" />
+                        </StackPanel>
+                    </ListBox.ToolTip>
+                    <ListBoxItem>
+                        <materialDesign:PackIcon Kind="FormatAlignLeft" />
+                    </ListBoxItem>
+                    <ListBoxItem>
+                        <materialDesign:PackIcon Kind="FormatAlignCenter" />
+                    </ListBoxItem>
+                    <ListBoxItem>
+                        <materialDesign:PackIcon Kind="FormatAlignRight" />
+                    </ListBoxItem>
+                    <ListBoxItem>
+                        <materialDesign:PackIcon Kind="FormatAlignJustify" />
+                    </ListBoxItem>
+                </ListBox>
+                <Separator />
+                <Button ToolTip="WBS">
+                    <materialDesign:PackIcon Kind="FileUpload" />
+                </Button>
+                <Button ToolTip="WBS">
+                    <materialDesign:PackIcon Kind="MicrosoftExcel" />
+                </Button>
+            </ToolBar>
+        </ToolBarTray>
+        <DataGrid
+          Margin="16"
+          ItemsSource="{Binding Items3}"
+          CanUserSortColumns="True"
+          CanUserAddRows="False"
+          materialDesign:DataGridAssist.CellPadding="4 2 2 2"
+          materialDesign:DataGridAssist.ColumnHeaderPadding="4 2 2 2" />
+    </DockPanel>
+</local:BasePage>
