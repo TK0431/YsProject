@@ -377,6 +377,10 @@ namespace YsProject.Utils
             => TryCatchUpdateConcurrencyException(()
                 => _db.Entry<T>(model).State = System.Data.Entity.EntityState.Deleted);
 
+
+        public int DeleteAll(string sql)
+            => _db.Database.ExecuteSqlCommand(sql);
+
         /// <summary>
         /// 削除List
         /// </summary>

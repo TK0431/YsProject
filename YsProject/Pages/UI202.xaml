@@ -15,10 +15,19 @@
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800">
     <DockPanel>
-        <ListView DockPanel.Dock="Top" ItemsSource="{Binding Items1}" Height="200" Margin="16">
+        <DockPanel DockPanel.Dock="Top">
+            <Button Command="{Binding BtnUpLoad}" CommandParameter="{Binding Path=.}" DockPanel.Dock="Right" Margin="0 16 16 16" Content="UpLoad"/>
+            <TextBox Margin="16" materialDesign:HintAssist.Hint="File" IsReadOnly="True"
+                 materialDesign:HintAssist.IsFloating="True"
+                 materialDesign:TextFieldAssist.HasOutlinedTextField="True" 
+                 materialDesign:TextFieldAssist.DecorationVisibility="Collapsed"
+                 materialDesign:TextFieldAssist.TextFieldCornerRadius="4"
+                 Text="{Binding FilePath}" />
+        </DockPanel>
+        <ListView DockPanel.Dock="Top" ItemsSource="{Binding Items}" Height="200" Margin="16">
             <ListView.View>
                 <GridView>
-                    <GridViewColumn DisplayMemberBinding="{Binding Code}" Header="ID" />
+                    <GridViewColumn DisplayMemberBinding="{Binding Case}" Header="ID" />
                     <GridViewColumn DisplayMemberBinding="{Binding Name}" Header="Name" />
                     <GridViewColumn DisplayMemberBinding="{Binding Leader}" Header="Leader" />
                     <GridViewColumn DisplayMemberBinding="{Binding Description}" Header="Description" />

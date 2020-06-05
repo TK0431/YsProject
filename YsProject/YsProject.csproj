@@ -150,6 +150,7 @@
     <Compile Include="Consts\ComAttribute.cs" />
     <Compile Include="Consts\ComConst.cs" />
     <Compile Include="Consts\ComEnum.cs" />
+    <Compile Include="Logics\UI202Logic.cs" />
     <Compile Include="Models\ComItem.cs" />
     <Compile Include="Models\DB\BaseTable.cs" />
     <Compile Include="Models\DB\TB_Group.cs" />
@@ -296,6 +297,7 @@
     </EmbeddedResource>
     <None Include="Excels\Dictionary.xlsx" />
     <None Include="Excels\ProjectTemplate.xlsx" />
+    <None Include="Excels\Selenium.xlsx" />
     <None Include="Excels\UI001.xlsx" />
     <None Include="Excels\UserTemplate.xlsx" />
     <None Include="packages.config" />
@@ -308,9 +310,14 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="setting.xml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Resource>
+    <EmbeddedResource Include="setting.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="chromedriver.exe">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\Fody.6.1.1\build\Fody.targets" Condition="Exists('..\packages\Fody.6.1.1\build\Fody.targets')" />

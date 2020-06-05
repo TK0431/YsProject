@@ -69,8 +69,8 @@ namespace YsProject.Utility
             worksheet.Cells.Style.Font.Name = "Arial";
 
             var excelData = _excel.GetAsByteArray();
-            var contentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
-            var fileName = "MyWorkbook.xlsx";
+            //var contentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+            //var fileName = "MyWorkbook.xlsx";
             //var file =  File(excelData, contentType, fileName);
 
 
