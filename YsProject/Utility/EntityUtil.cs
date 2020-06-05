@@ -3,11 +3,11 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
-using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
 using YsProject.Models;
+using YsProject.Utility;
 
 namespace YsProject.Utils
 {
@@ -40,7 +40,7 @@ namespace YsProject.Utils
         /// </summary>
         public EntityDao(bool transFlg = false)
         {
-            _db = new KebDbContext();
+            _db = new EFCoreDbContext();
 
             // 事務設定
             if (transFlg)
@@ -216,7 +216,7 @@ namespace YsProject.Utils
         /// <param name="sql"></param>
         /// <param name="paramArray"></param>
         /// <returns></returns>
-        public List<T> FindAll<T>(string sql, List<NpgsqlParameter> paramArray) where T : class
+        public List<T> FindAll<T>(string sql, List<MySqlParameter> paramArray) where T : class
             => _db.Database.SqlQuery<T>(sql, paramArray.ToArray()).ToList();
 
         /// <summary>
@@ -226,13 +226,13 @@ namespace YsProject.Utils
         /// <param name="sql"></param>
         /// <param name="paramArray"></param>
         /// <returns></returns>
-        public List<T> FindAll<T>(string sql, Func<T, T> model, List<NpgsqlParameter> paramArray = null) where T : class
+        public List<T> FindAll<T>(string sql, Func<T, T> model, List<MySqlParameter> paramArray = null) where T : class
             => _db.Database.SqlQuery<T>(sql, paramArray).Select(model).ToList();
 
         public T FindSingle<T>(string sql)
             => _db.Database.SqlQuery<T>(sql).Single();
 
-        public T FindSingle<T>(string sql, List<NpgsqlParameter> paramArray = null)
+        public T FindSingle<T>(string sql, List<MySqlParameter> paramArray = null)
             => _db.Database.SqlQuery<T>(sql, paramArray == null ? null : paramArray.ToArray()).Single();
 
         /// <summary>
@@ -275,81 +275,79 @@ namespace YsProject.Utils
         /// 更新(複数)
         /// </summary>
         /// <param name="model"></param>
-        public void Update<T, M>(BaseModel model, List<M> list, Action<T, M> action) where T : class
-        {
-            // 更新リスト
-            List<T> updList = new List<T>();
+        //public void Update<T, M>(BaseModel model, List<M> list, Action<T, M> action) where T : class
+        //{
+        //    // 更新リスト
+        //    List<T> updList = new List<T>();
 
-            foreach (var item in list)
-            {
-                // WHERE 条件
-                Expression<Func<T, bool>> where = this.GetUpdateWhereExpression<T, M>(item);
+        //    foreach (var item in list)
+        //    {
+        //        // WHERE 条件
+        //        Expression<Func<T, bool>> where = this.GetUpdateWhereExpression<T, M>(item);
 
-                // データ取得
-                T data = this.FindTrack(where);
+        //        // データ取得
+        //        T data = this.FindTrack(where);
 
-                if (data == null)
-                {
-                    // 既に更新された(排他エラー)
-                    model.ErrorList.Add("既に更新された");
-                    this.RollBack();
-                    return;
-                }
-                else
-                {
-                    // データ更新
-                    action(data, item);
+        //        if (data == null)
+        //        {
+        //            // 既に更新された(排他エラー)
+        //            model.ErrorList.Add("既に更新された");
+        //            this.RollBack();
+        //            return;
+        //        }
+        //        else
+        //        {
+        //            // データ更新
+        //            action(data, item);
 
-                    updList.Add(data);
-                }
-            }
+        //            updList.Add(data);
+        //        }
+        //    }
 
-            // 更新
-            if (this.Update(updList) < 0)
-            {
-                // 更新中排他エラー
-                model.ErrorList.Add("既に更新された");
-                this.RollBack();
-                return;
-            }
-
-        }
+        //    // 更新
+        //    if (this.Update(updList) < 0)
+        //    {
+        //        // 更新中排他エラー
+        //        model.ErrorList.Add("既に更新された");
+        //        this.RollBack();
+        //        return;
+        //    }
+        //}
 
         /// <summary>
         /// 更新
         /// </summary>
         /// <param name="model"></param>
-        public void Update<T, M>(BaseModel model, M item, Action<T, M> action) where T : class
-        {
-            // WHERE 条件
-            Expression<Func<T, bool>> where = this.GetUpdateWhereExpression<T, M>(item);
+        //public void Update<T, M>(BaseModel model, M item, Action<T, M> action) where T : class
+        //{
+        //    // WHERE 条件
+        //    Expression<Func<T, bool>> where = this.GetUpdateWhereExpression<T, M>(item);
 
-            // データ取得
-            T data = this.FindTrack(where);
+        //    // データ取得
+        //    T data = this.FindTrack(where);
 
-            if (data == null)
-            {
-                // 既に更新された(排他エラー)
-                model.ErrorList.Add("既に更新された");
-                this.RollBack();
-                return;
-            }
-            else
-            {
-                // データ更新
-                action(data, item);
-            }
+        //    if (data == null)
+        //    {
+        //        // 既に更新された(排他エラー)
+        //        model.ErrorList.Add("既に更新された");
+        //        this.RollBack();
+        //        return;
+        //    }
+        //    else
+        //    {
+        //        // データ更新
+        //        action(data, item);
+        //    }
 
-            // 更新
-            if (this.Update(data) < 0)
-            {
-                // 更新中排他エラー
-                model.ErrorList.Add("既に更新された");
-                this.RollBack();
-                return;
-            }
-
-        }
+        //    // 更新
+        //    if (this.Update(data) < 0)
+        //    {
+        //        // 更新中排他エラー
+        //        model.ErrorList.Add("既に更新された");
+        //        this.RollBack();
+        //        return;
+        //    }
+        //}
 
         /// <summary>
         /// GetWhereExpression
