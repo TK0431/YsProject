@@ -38,17 +38,17 @@ namespace YsProject.Utils
         /// <summary>
         /// 初期化
         /// </summary>
-        //public EntityDao(IServiceProvider serviceProvider)
-        //{
-        //    _db = (EFCoreDbContext)serviceProvider.GetService(typeof(EFCoreDbContext));
-
-        //    this.DbConectTime = DateTime.Now;
-        //}
-        public EntityDao()
+        public EntityDao(bool transFlg = false)
         {
-            _db = new EFCoreDbContext();
+            _db = new KebDbContext();
 
-            this.DbConectTime = DateTime.Now;
+            // 事務設定
+            if (transFlg)
+            {
+                this.DbConectTime = DateTime.Now;
+                _trans = _db.Database.BeginTransaction();
+                _rollBack = false;
+            }
         }
 
         /// <summary>
@@ -150,8 +150,8 @@ namespace YsProject.Utils
         /// <typeparam name="T"></typeparam>
         /// <param name="where"></param>
         /// <returns></returns>
-        public List<T> FindAll<T, TKey>(Expression<Func<T, bool>> where, Expression<Func<T, TKey>> order = null, int skip = 0, int take = 0) where T : class
-            => _db.Set<T>().AsNoTracking().SetWhere(where).SetOrder(order).Skip(skip).Take(take).ToList();
+        public List<T> FindAll<T, TKey>(Expression<Func<T, bool>> where, Expression<Func<T, TKey>> order = null, Expression<Func<int>> skip = null, Expression<Func<int>> take = null) where T : class
+            => _db.Set<T>().AsNoTracking().SetWhere(where).SetOrder(order).SetSkip(skip).SetTake(take).ToList();
 
         /// <summary>
         /// Whereで複数検索(NoTrack)
@@ -159,8 +159,8 @@ namespace YsProject.Utils
         /// <typeparam name="T"></typeparam>
         /// <param name="where"></param>
         /// <returns></returns>
-        public List<M> FindAll<T, M, TKey>(Expression<Func<T, M>> model, Expression<Func<T, bool>> where = null, Expression<Func<T, TKey>> order = null, int skip = 0, int take = 0) where T : class
-            => _db.Set<T>().AsNoTracking().SetWhere(where).SetOrder(order).Skip(skip).Take(take).Select(model).ToList();
+        public List<M> FindAll<T, M, TKey>(Expression<Func<T, M>> model, Expression<Func<T, bool>> where = null, Expression<Func<T, TKey>> order = null, Expression<Func<int>> skip = null, Expression<Func<int>> take = null) where T : class
+            => _db.Set<T>().AsNoTracking().SetWhere(where).SetOrder(order).SetSkip(skip).SetTake(take).Select(model).ToList();
 
         /// <summary>
         /// Whereで複数検索(NoTrack)
@@ -168,8 +168,8 @@ namespace YsProject.Utils
         /// <typeparam name="T"></typeparam>
         /// <param name="where"></param>
         /// <returns></returns>
-        public List<T> FindAll<T, TKey>(Expression<Func<T, bool>> where, List<Expression<Func<T, TKey>>> list = null, int skip = 0, int take = 0) where T : class
-            => _db.Set<T>().AsNoTracking().SetWhere(where).SetOrder(list).Skip(skip).Take(take).ToList();
+        public List<T> FindAll<T, TKey>(Expression<Func<T, bool>> where, List<Expression<Func<T, TKey>>> list = null, Expression<Func<int>> skip = null, Expression<Func<int>> take = null) where T : class
+            => _db.Set<T>().AsNoTracking().SetWhere(where).SetOrder(list).SetSkip(skip).SetTake(take).ToList();
 
         /// <summary>
         /// Whereで複数検索(NoTrack)
@@ -177,8 +177,8 @@ namespace YsProject.Utils
         /// <typeparam name="T"></typeparam>
         /// <param name="where"></param>
         /// <returns></returns>
-        public List<M> FindAll<T, M, TKey>(Expression<Func<T, M>> model, Expression<Func<T, bool>> where = null, List<Expression<Func<T, TKey>>> list = null, int skip = 0, int take = 0) where T : class
-            => _db.Set<T>().AsNoTracking().SetWhere(where).SetOrder(list).Skip(skip).Take(take).Select(model).ToList();
+        public List<M> FindAll<T, M, TKey>(Expression<Func<T, M>> model, Expression<Func<T, bool>> where = null, List<Expression<Func<T, TKey>>> list = null, Expression<Func<int>> skip = null, Expression<Func<int>> take = null) where T : class
+            => _db.Set<T>().AsNoTracking().SetWhere(where).SetOrder(list).SetSkip(skip).SetTake(take).Select(model).ToList();
 
         // <summary>
         /// Whereで複数検索(Track)
@@ -196,17 +196,7 @@ namespace YsProject.Utils
         /// <param name="sql"></param>
         /// <param name="paramArray"></param>
         /// <returns></returns>
-        //public List<T> FindAll<T>(string sql) where T : class
-        //    => _db.Set<T>().FromSqlRaw(sql).ToList();
-
-        /// <summary>
-        /// SQLで複数検索(NoTrack)
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="sql"></param>
-        /// <param name="paramArray"></param>
-        /// <returns></returns>
-        public List<T> FindAll<T>(string sql) where T : class, new()
+        public List<T> FindAll<T>(string sql) where T : class
             => _db.Database.SqlQuery<T>(sql).ToList();
 
         /// <summary>
@@ -216,8 +206,8 @@ namespace YsProject.Utils
         /// <param name="sql"></param>
         /// <param name="paramArray"></param>
         /// <returns></returns>
-        public List<T> FindAll<T>(string sql, List<MySqlParameter> param) where T : class
-            => _db.Database.SqlQuery<T>(sql, param).ToList();
+        public List<T> FindAllLimit<T>(string sql, string gamenId) where T : class
+            => _db.Database.SqlQuery<T>(sql + CommonUtil.getItemMaxCount(gamenId)).ToList();
 
         /// <summary>
         /// SQLで複数検索(NoTrack)
@@ -226,14 +216,24 @@ namespace YsProject.Utils
         /// <param name="sql"></param>
         /// <param name="paramArray"></param>
         /// <returns></returns>
-        public List<T> FindAll<T>(string sql, Func<T, T> model, List<MySqlParameter> paramArray = null) where T : class
+        public List<T> FindAll<T>(string sql, List<NpgsqlParameter> paramArray) where T : class
+            => _db.Database.SqlQuery<T>(sql, paramArray.ToArray()).ToList();
+
+        /// <summary>
+        /// SQLで複数検索(NoTrack)
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="sql"></param>
+        /// <param name="paramArray"></param>
+        /// <returns></returns>
+        public List<T> FindAll<T>(string sql, Func<T, T> model, List<NpgsqlParameter> paramArray = null) where T : class
             => _db.Database.SqlQuery<T>(sql, paramArray).Select(model).ToList();
 
-        public T FindSingle<T>(string sql) where T : class
+        public T FindSingle<T>(string sql)
             => _db.Database.SqlQuery<T>(sql).Single();
 
-        public T FindSingle<T>(string sql, List<MySqlParameter> param) where T : class
-            => _db.Database.SqlQuery<T>(sql, param).Single();
+        public T FindSingle<T>(string sql, List<NpgsqlParameter> paramArray = null)
+            => _db.Database.SqlQuery<T>(sql, paramArray == null ? null : paramArray.ToArray()).Single();
 
         /// <summary>
         /// 追加
@@ -272,84 +272,84 @@ namespace YsProject.Utils
             => TryCatchUpdateConcurrencyException(() => list.ForEach(t => _db.Entry<T>(t).State = EntityState.Modified));
 
         /// <summary>
-        /// 更新
+        /// 更新(複数)
         /// </summary>
         /// <param name="model"></param>
-        //public void Update<T, M>(EntityDao db, BaseModel model, List<M> list, Action<T, M> action) where T : class
-        //{
-        //    // 更新リスト
-        //    List<T> updList = new List<T>();
+        public void Update<T, M>(BaseModel model, List<M> list, Action<T, M> action) where T : class
+        {
+            // 更新リスト
+            List<T> updList = new List<T>();
 
-        //    foreach (var item in list)
-        //    {
-        //        // WHERE 条件
-        //        Expression<Func<T, bool>> where = this.GetUpdateWhereExpression<T, M>(item);
+            foreach (var item in list)
+            {
+                // WHERE 条件
+                Expression<Func<T, bool>> where = this.GetUpdateWhereExpression<T, M>(item);
 
-        //        // データ取得
-        //        T data = db.FindTrack(where);
+                // データ取得
+                T data = this.FindTrack(where);
 
-        //        if (data == null)
-        //        {
-        //            // 既に更新された(排他エラー)
-        //            model.ErrorList.Add("既に更新された");
-        //            db.RollBack();
-        //            return;
-        //        }
-        //        else
-        //        {
-        //            // データ更新
-        //            action(data, item);
+                if (data == null)
+                {
+                    // 既に更新された(排他エラー)
+                    model.ErrorList.Add("既に更新された");
+                    this.RollBack();
+                    return;
+                }
+                else
+                {
+                    // データ更新
+                    action(data, item);
 
-        //            updList.Add(data);
-        //        }
-        //    }
+                    updList.Add(data);
+                }
+            }
 
-        //    // 更新
-        //    if (db.Update(updList) < 0)
-        //    {
-        //        // 更新中排他エラー
-        //        model.ErrorList.Add("既に更新された");
-        //        db.RollBack();
-        //        return;
-        //    }
+            // 更新
+            if (this.Update(updList) < 0)
+            {
+                // 更新中排他エラー
+                model.ErrorList.Add("既に更新された");
+                this.RollBack();
+                return;
+            }
 
-        //}
+        }
 
         /// <summary>
         /// 更新
         /// </summary>
         /// <param name="model"></param>
-        //public void Update<T, M>(EntityDao db, BaseModel model, M item, Action<T, M> action) where T : class
-        //{
-        //    // WHERE 条件
-        //    Expression<Func<T, bool>> where = this.GetUpdateWhereExpression<T, M>(item);
+        public void Update<T, M>(BaseModel model, M item, Action<T, M> action) where T : class
+        {
+            // WHERE 条件
+            Expression<Func<T, bool>> where = this.GetUpdateWhereExpression<T, M>(item);
 
-        //    // データ取得
-        //    T data = db.FindTrack(where);
+            // データ取得
+            T data = this.FindTrack(where);
 
-        //    if (data == null)
-        //    {
-        //        // 既に更新された(排他エラー)
-        //        model.ErrorList.Add("既に更新された");
-        //        db.RollBack();
-        //        return;
-        //    }
-        //    else
-        //    {
-        //        // データ更新
-        //        action(data, item);
-        //    }
+            if (data == null)
+            {
+                // 既に更新された(排他エラー)
+                model.ErrorList.Add("既に更新された");
+                this.RollBack();
+                return;
+            }
+            else
+            {
+                // データ更新
+                action(data, item);
+            }
 
-        //    // 更新
-        //    if (db.Update(data) < 0)
-        //    {
-        //        // 更新中排他エラー
-        //        model.ErrorList.Add("既に更新された");
-        //        db.RollBack();
-        //        return;
-        //    }
+            // 更新
+            if (this.Update(data) < 0)
+            {
+                // 更新中排他エラー
+                model.ErrorList.Add("既に更新された");
+                this.RollBack();
+                return;
+            }
 
-        //}
+        }
 
         /// <summary>
         /// GetWhereExpression
@@ -375,37 +375,9 @@ namespace YsProject.Utils
         /// <typeparam name="T"></typeparam>
         /// <param name="model"></param>
         /// <returns></returns>
-        public int DeleteAll(string sql)
-        {
-            return _db.Database.ExecuteSqlCommand(sql);
-            //_db.Database.ExecuteSqlInterpolated(sql);
-            //var con = _db.Database.GetDbConnection();
-            //int result;
-            //try
-            //{
-            //    con.Open();
-            //    using (var com = con.CreateCommand())
-            //    {
-            //        com.CommandText = sql;
-            //        result = com.ExecuteNonQuery();
-            //    }
-            //}
-            //finally
-            //{
-            //    con.Close();
-            //}
-            //return result;
-        }
-
-        /// <summary>
-        /// 削除
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="model"></param>
-        /// <returns></returns>
         public int Delete<T>(T model) where T : class
             => TryCatchUpdateConcurrencyException(()
-                => _db.Entry<T>(model).State = EntityState.Deleted);
+                => _db.Entry<T>(model).State = System.Data.Entity.EntityState.Deleted);
 
         /// <summary>
         /// 削除List
@@ -416,7 +388,7 @@ namespace YsProject.Utils
         public int Delete<T>(List<T> list) where T : class
         => TryCatchUpdateConcurrencyException(()
             => list.ForEach(model
-                => _db.Entry<T>(model).State = EntityState.Deleted));
+                => _db.Entry<T>(model).State = System.Data.Entity.EntityState.Deleted));
 
         /// <summary>
         /// 排他確認
@@ -425,9 +397,6 @@ namespace YsProject.Utils
         /// <returns></returns>
         private int TryCatchUpdateConcurrencyException(Action action)
         {
-            // 事務設定
-            if (_trans != null) _trans = _db.Database.BeginTransaction();
-
             try
             {
                 // 変更処理
@@ -435,7 +404,7 @@ namespace YsProject.Utils
                 // 保存
                 return _db.SaveChanges();
             }
-            catch (DbUpdateConcurrencyException)
+            catch (System.Data.Entity.Infrastructure.DbUpdateConcurrencyException)
             {
                 // 排他発生
                 _rollBack = true;
@@ -471,6 +440,12 @@ namespace YsProject.Utils
                 return newTb;
             }
         }
+
+        public static IQueryable<T> SetSkip<T>(this IQueryable<T> tb, Expression<Func<int>> skip = null) where T : class
+            => skip == null ? tb : tb.Skip(skip);
+
+        public static IQueryable<T> SetTake<T>(this IQueryable<T> tb, Expression<Func<int>> take = null) where T : class
+            => take == null ? tb : tb.Take(take);
 
         public static List<T> Clone<T>(this List<T> list) where T : ICloneable
             => list.Select(x => (T)x.Clone()).ToList();
