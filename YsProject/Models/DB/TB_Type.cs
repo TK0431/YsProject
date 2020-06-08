@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Data.Entity.Infrastructure.Annotations;
 using System.Data.Entity.ModelConfiguration;
 
 namespace YsProject.Models.DB
@@ -23,10 +24,11 @@ namespace YsProject.Models.DB
 
     public class Map_TB_Type : EntityTypeConfiguration<TB_Type>
     {
-        //public void Configure(EntityTypeBuilder<TB_Type> builder)
-        //{
-        //    // 唯一索引
-        //    builder.HasIndex(p => new { p.Type, p.Value }).IsUnique();
-        //}
+        public Map_TB_Type():base()
+        {
+            // index
+            Property(t => t.Type).HasColumnAnnotation("Index", new IndexAnnotation(new IndexAttribute("TB_Type_Index1", 0) { IsUnique = true }));
+            Property(t => t.Value).HasColumnAnnotation("Index", new IndexAnnotation(new IndexAttribute("TB_Type_Index1", 1) { IsUnique = true }));
+        }
     }
 }

@@ -4,9 +4,12 @@ using System.Linq;
 using System.Reflection;
 using System.Data.Entity.ModelConfiguration;
 using YsProject.Models.DB;
+using MySql.Data.EntityFramework;
 
 namespace YsProject.Models
 {
+
+    [DbConfigurationType(typeof(MySqlEFConfiguration))]
     public class EFCoreDbContext : DbContext
     {
         public EFCoreDbContext() : base("name=MysqlConnectionString")
@@ -16,7 +19,7 @@ namespace YsProject.Models
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             // 排他
-            // modelBuilder.Properties().Where(p => p.Name == "UpdateTime").Configure(p => p.IsConcurrencyToken());
+            modelBuilder.Properties().Where(p => p.Name == "UpdateTime").Configure(p => p.IsConcurrencyToken());
 
             var typesToRegister = Assembly.GetExecutingAssembly().GetTypes()
                 .Where(type => !String.IsNullOrEmpty(type.Namespace))
@@ -25,7 +28,7 @@ namespace YsProject.Models
             foreach (var type in typesToRegister)
             {
                 dynamic configurationInstance = Activator.CreateInstance(type);
-                //modelBuilder.ApplyConfiguration(configurationInstance);
+                modelBuilder.Configurations.Add(configurationInstance);
             }
         }
 

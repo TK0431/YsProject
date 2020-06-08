@@ -153,12 +153,15 @@
     <Compile Include="Consts\ComAttribute.cs" />
     <Compile Include="Consts\ComConst.cs" />
     <Compile Include="Consts\ComEnum.cs" />
+    <Compile Include="Logics\UI001Logic.cs" />
     <Compile Include="Logics\UI202Logic.cs" />
+    <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\ComItem.cs" />
     <Compile Include="Models\DB\BaseTable.cs" />
     <Compile Include="Models\DB\TB_Group.cs" />
     <Compile Include="Models\DB\TB_Project.cs" />
     <Compile Include="Models\DB\TB_Type.cs" />
+    <Compile Include="Models\DB\TB_Function.cs" />
     <Compile Include="Models\DB\TB_User.cs" />
     <Compile Include="Models\EFCoreDbContext.cs" />
     <Compile Include="Utility\CheckUtil.cs" />
@@ -175,6 +178,7 @@
     <Compile Include="ViewModels\Base\RelayCommand.cs" />
     <Compile Include="ViewModels\Base\RelayTCommand.cs" />
     <Compile Include="ViewModels\MainWindowViewModel.cs" />
+    <Compile Include="ViewModels\UI001ViewModel.cs" />
     <Compile Include="ViewModels\UI002ViewModel.cs" />
     <Compile Include="ViewModels\UI201ViewModel.cs" />
     <Compile Include="ViewModels\UI202ViewModel.cs" />
