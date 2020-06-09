@@ -118,6 +118,19 @@ namespace YsProject.Utils
             => _excel.Workbook.Worksheets[sheetName];
 
         /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sheetName"></param>
+        /// <returns></returns>
+        public int GetMaxRow(ExcelWorksheet sheet, int col)
+        {
+            for (int i = 1; i <= sheet.Cells.Rows; i++)
+                if (string.IsNullOrWhiteSpace(sheet.Cells[i, col].Text))
+                    return i-1;
+            return sheet.Cells.Rows;
+        }
+
+        /// <summary>
         /// Save
         /// </summary>
         public void Save()

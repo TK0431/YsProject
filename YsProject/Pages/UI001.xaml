@@ -19,7 +19,7 @@
         <ToolBarTray DockPanel.Dock="Top">
             <ToolBar Style="{DynamicResource MaterialDesignToolBar}" ClipToBounds="False">
                 <Label Content="Project:" VerticalAlignment="Center" />
-                <ComboBox ItemsSource="{Binding ProjectItems}" SelectedItem="{Binding SelectedProjectItem}" DisplayMemberPath="{Binding Name}"/>
+                <ComboBox ItemsSource="{Binding ProjectItems}" SelectedItem="{Binding SelectedProjectItem}" DisplayMemberPath="Name"/>
                 <Separator />
                 <Button ToolTip="WBS">
                     <materialDesign:PackIcon Kind="FileTableBoxMultiple" />

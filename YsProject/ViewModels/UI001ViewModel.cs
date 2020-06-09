@@ -49,35 +49,4 @@ namespace YsProject.ViewModels
             _logic.GetProjects(this);
         }
     }
-
-    /// <summary>
-    /// 一览
-    /// </summary>
-    public class UI002Item
-    {
-        /// <summary>
-        /// 员工号
-        /// </summary>
-        public string Cd { get; set; }
-
-        /// <summary>
-        /// 员工姓名
-        /// </summary>
-        public string Name { get; set; }
-
-        /// <summary>
-        /// 组
-        /// </summary>
-        public string Group { get; set; }
-
-        /// <summary>
-        /// IP
-        /// </summary>
-        public string IP { get; set; }
-
-        /// <summary>
-        /// 删除
-        /// </summary>
-        public string Delete { get; set; }
-    }
 }

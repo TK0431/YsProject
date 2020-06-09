@@ -21,7 +21,7 @@ namespace YsProject.Models.DB
         [Display(Name = "用户名", Order = 2), Required, StringLength(10)]
         public string Name { get; set; }
 
-        [Display(Name = "密码", Order = 3), StringLength(32)]
+        [Display(Name = "密码", Order = 3), Required, StringLength(32)]
         public string Password { get; set; }
 
         [Display(Name = "IP", Order = 4), StringLength(15)]
@@ -33,10 +33,10 @@ namespace YsProject.Models.DB
         [Display(Name = "权限", Order = 6), Required]
         public int Level { get; set; }
 
-        [Display(Name = "期间(开始)", Order = 7), Required]
+        [Display(Name = "期间(开始)", Order = 7)]
         public DateTime? DateStart { get; set; }
 
-        [Display(Name = "期间(终了)", Order = 8), Required]
+        [Display(Name = "期间(终了)", Order = 8)]
         public DateTime? DateEnd { get; set; }
     }
 

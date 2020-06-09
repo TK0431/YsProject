@@ -44,5 +44,9 @@ namespace YsProject.Models
 
         //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         //    => optionsBuilder.UseMySQL(_connectionString);
+
+        //Enable-Migrations
+        //Add-Migration
+        //Update-Database
     }
 }

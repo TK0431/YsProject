@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
+using System.Data.Entity.Validation;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
@@ -411,6 +412,12 @@ namespace YsProject.Utils
                 // 排他発生
                 _rollBack = true;
                 return -1;
+            }
+            catch (DbEntityValidationException ex)
+            {
+                // 排他発生
+                _rollBack = true;
+                return -9;
             }
         }
 
