@@ -303,6 +303,7 @@
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <None Include="Excels\Dictionary.xlsx" />
+    <None Include="Excels\WbsTemplate.xlsx" />
     <None Include="Excels\ProjectTemplate.xlsx" />
     <None Include="Excels\Selenium.xlsx" />
     <None Include="Excels\UI001.xlsx" />
