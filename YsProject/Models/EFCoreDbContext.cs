@@ -5,6 +5,7 @@ using System.Reflection;
 using System.Data.Entity.ModelConfiguration;
 using YsProject.Models.DB;
 using MySql.Data.EntityFramework;
+using YsProject.Utils;
 
 namespace YsProject.Models
 {
@@ -14,6 +15,11 @@ namespace YsProject.Models
     {
         public EFCoreDbContext() : base("name=MysqlConnectionString")
         {
+            Database.SetInitializer<EFCoreDbContext>(null);
+            Database.Log = x =>
+            {
+                LogUtility.WriteInfo(x.LastIndexOf("\r\n") > 0 ? x.Remove(x.LastIndexOf("\r\n"), 2) : x);
+            };
         }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)

@@ -310,9 +310,9 @@ namespace YsProject.Utils
         //    {
         //        // 更新中排他エラー
         //        model.ErrorList.Add("既に更新された");
-        //        this.RollBack();
         //        return;
         //    }
+
         //}
 
         /// <summary>
@@ -345,9 +345,100 @@ namespace YsProject.Utils
         //    {
         //        // 更新中排他エラー
         //        model.ErrorList.Add("既に更新された");
-        //        this.RollBack();
         //        return;
         //    }
+        //}
+
+        /// <summary>
+        /// 更新
+        /// </summary>
+        /// <param name="model"></param>
+        //public int FlgDelete<T>(BaseModel model, Expression<Func<T, bool>> where) where T : class
+        //{
+        //    // WHERE 条件
+        //    ParameterExpression parameter = Expression.Parameter(typeof(T), "x");
+        //    MemberExpression member1 = Expression.Property(parameter, "delete_flg");
+        //    MemberExpression member2 = Expression.Property(parameter, "updater_cd");
+        //    MemberExpression member3 = Expression.Property(parameter, "update_date");
+        //    BlockExpression block1 = Expression.Block(Expression.Assign(member1, Expression.Constant("1", typeof(string))));
+        //    BlockExpression block2 = Expression.Block(Expression.Assign(member2, Expression.Constant(model.Session.EmpmCd, typeof(string))));
+        //    BlockExpression block3 = Expression.Block(Expression.Assign(member3, Expression.Constant(this.DbConectTime, typeof(DateTime))));
+
+        //    Action<T> action = Expression.Lambda<Action<T>>(Expression.Block(block1, block2, block3), parameter).Compile();
+
+        //    // データ取得
+        //    List<T> data = this.FindAllTrack<T>(where);
+
+        //    if (data.Count == 0)
+        //    {
+        //        return 0;
+        //    }
+        //    else
+        //    {
+        //        // データ更新
+        //        data.ForEach(x => action(x));
+        //    }
+
+        //    int result = this.Update(data);
+
+        //    // 更新
+        //    if (result < 0)
+        //    {
+        //        // 更新中排他エラー
+        //        model.ErrorList.Add("既に更新された");
+        //        this.RollBack();
+        //        return -1;
+        //    }
+        //    else
+        //    {
+        //        return result;
+        //    }
+        //}
+
+        /// <summary>
+        /// 登録
+        /// </summary>
+        /// <param name="model"></param>
+        //public int Add<T>(BaseModel model, T item) where T : class
+        //{
+        //    Action<T> action = GetAddWhereAction<T>(model);
+
+        //    // データ更新
+        //    action(item);
+
+        //    // 登録
+        //    if (this.Add(item) < 0)
+        //    {
+        //        // 更新中排他エラー
+        //        model.ErrorList.Add("既に更新された");
+        //        this.RollBack();
+        //        return -2;
+        //    }
+
+        //    return 0;
+        //}
+
+        /// <summary>
+        /// 登録
+        /// </summary>
+        /// <param name="model"></param>
+        //public int Add<T>(BaseModel model, List<T> items) where T : class
+        //{
+        //    Action<T> action = GetAddWhereAction<T>(model);
+
+        //    // データ更新
+        //    items.ForEach(x => action(x));
+
+        //    // 登録
+        //    if (this.Add(items) < 0)
+        //    {
+        //        // 更新中排他エラー
+        //        model.ErrorList.Add("既に更新された");
+        //        this.RollBack();
+        //        return -2;
+        //    }
+
+        //    return 0;
         //}
 
         /// <summary>
@@ -369,6 +460,30 @@ namespace YsProject.Utils
         }
 
         /// <summary>
+        /// GetWhereExpression
+        /// </summary>
+        /// <typeparam name="T">Table</typeparam>
+        /// <typeparam name="M">Item</typeparam>
+        /// <param name="item">Item</param>
+        /// <returns></returns>
+        //private Action<T> GetAddWhereAction<T>(BaseModel model) where T : class
+        //{
+        //    ParameterExpression parameter = Expression.Parameter(typeof(T), "x");
+        //    MemberExpression member1 = Expression.Property(parameter, "delete_flg");
+        //    MemberExpression member2 = Expression.Property(parameter, "creator_cd");
+        //    MemberExpression member3 = Expression.Property(parameter, "create_date");
+        //    MemberExpression member4 = Expression.Property(parameter, "updater_cd");
+        //    MemberExpression member5 = Expression.Property(parameter, "update_date");
+        //    BlockExpression block1 = Expression.Block(Expression.Assign(member1, Expression.Constant("0", typeof(string))));
+        //    BlockExpression block2 = Expression.Block(Expression.Assign(member2, Expression.Constant(model.Session.EmpmCd, typeof(string))));
+        //    BlockExpression block3 = Expression.Block(Expression.Assign(member3, Expression.Constant(this.DbConectTime, typeof(DateTime))));
+        //    BlockExpression block4 = Expression.Block(Expression.Assign(member4, Expression.Constant(model.Session.EmpmCd, typeof(string))));
+        //    BlockExpression block5 = Expression.Block(Expression.Assign(member5, Expression.Constant(this.DbConectTime, typeof(DateTime))));
+
+        //    return Expression.Lambda<Action<T>>(Expression.Block(block1, block2, block3, block4, block5), parameter).Compile();
+        //}
+
+        /// <summary>
         /// 削除
         /// </summary>
         /// <typeparam name="T"></typeparam>
@@ -377,10 +492,6 @@ namespace YsProject.Utils
         public int Delete<T>(T model) where T : class
             => TryCatchUpdateConcurrencyException(()
                 => _db.Entry<T>(model).State = System.Data.Entity.EntityState.Deleted);
-
-
-        public int DeleteAll(string sql)
-            => _db.Database.ExecuteSqlCommand(sql);
 
         /// <summary>
         /// 削除List
@@ -392,6 +503,9 @@ namespace YsProject.Utils
         => TryCatchUpdateConcurrencyException(()
             => list.ForEach(model
                 => _db.Entry<T>(model).State = System.Data.Entity.EntityState.Deleted));
+
+        public int DeleteAll(string sql)
+            => _db.Database.ExecuteSqlCommand(sql);
 
         /// <summary>
         /// 排他確認
@@ -413,11 +527,13 @@ namespace YsProject.Utils
                 _rollBack = true;
                 return -1;
             }
-            catch (DbEntityValidationException ex)
+            catch (DbEntityValidationException dbEx)
             {
-                // 排他発生
-                _rollBack = true;
-                return -9;
+                dbEx.EntityValidationErrors.First().ValidationErrors.ToList().ForEach(x =>
+                    LogUtility.WriteError(x.ErrorMessage, dbEx)
+                );
+
+                throw dbEx;
             }
         }
 
