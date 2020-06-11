@@ -1,10 +1,12 @@
-﻿using OfficeOpenXml;
+﻿using MySql.Data.MySqlClient;
+using OfficeOpenXml;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Net;
 using System.Security.Cryptography;
 using System.Text;
+using YsProject.Consts;
 using YsProject.Models.DB;
 using YsProject.Utility;
 using YsProject.Utils;
@@ -58,14 +60,17 @@ namespace YsProject.Logics
             {
                 #region Project
 
+                // 获取Project Sheet
                 ExcelWorksheet sheet = excel.GetSheet("Project");
                 if (sheet == null) return;
 
-                // Project
+                // 数据设定
                 TB_Project pro = new TB_Project()
                 {
                     CD = sheet.Cells[2, 1].Text,
                     Name = sheet.Cells[2, 2].Text,
+                    DateStart = DataUtility.CDateDB(sheet.Cells[2, 3].Text),
+                    DateEnd = DataUtility.CDateDB(sheet.Cells[2, 4].Text),
                 };
 
                 // 项目ID 项目名 Check
@@ -74,116 +79,99 @@ namespace YsProject.Logics
                     return;
                 }
 
-                // 项目期间  ****************************************change
-                DateTime temp1;
-                if (DateTime.TryParse(sheet.Cells[2, 3].Text, out temp1))
-                    pro.DateStart = temp1;
-                DateTime temp2;
-                if (DateTime.TryParse(sheet.Cells[2, 4].Text, out temp2))
-                    pro.DateEnd = temp2;
-
-                pro.DelFlg = false;
-                pro.InserterCd = "139047";
-                pro.InserteTime = db.DbConectTime;
-                pro.UpdaterCd = "139047";
-                pro.UpdateTime = db.DbConectTime;
-
                 // 删除既存
-                db.DeleteAll("delete from TB_project");
-                db.Add(pro);
+                int k = db.DeleteAll("delete from TB_project where CD = @CD", new List<MySqlParameter>() { new MySqlParameter("CD", pro.CD) });
+                // 添加数据
+                db.AddData(pro);
 
                 #endregion
 
                 #region User
 
-                List<TB_User> userList = new List<TB_User>();
+                // 获取User Sheet
                 sheet = excel.GetSheet("User");
+
+                // 数据设定
+                List<TB_User> userList = new List<TB_User>();
                 for (int i = 2; i <= excel.GetMaxRow(sheet, 1); i++)
                 {
-                    // 密码
+                    // 密码(默认123)转MD5
                     string md5 = ComUtility.GetMD5(string.IsNullOrWhiteSpace(sheet.Cells[i, 3].Text) ? "123" : sheet.Cells[i, 3].Text);
 
                     // 权限
-                    int level;
-                    if (int.TryParse(sheet.Cells[i, 5].Text, out level))
-                    {
-                        if (level < 0 || level > 4) level = 0;
-                    }
-                    else level = 0;
+                    int level = DataUtility.CIntDB(sheet.Cells[i, 5].Text, 1);
+                    if (level <= 0 || level > 4) level = 1;
 
+                    // 数据设定
                     TB_User user = new TB_User()
                     {
                         ProjectCD = pro.CD,
                         CD = sheet.Cells[i, 1].Text,
                         Name = sheet.Cells[i, 2].Text,
                         Password = md5,
-                        IP = sheet.Cells[i, 4].Text,
+                        IP = DataUtility.CIPDB(sheet.Cells[i, 4].Text),
                         Level = level,
+                        DateStart = DataUtility.CDateDB(sheet.Cells[i, 6].Text),
+                        DateEnd = DataUtility.CDateDB(sheet.Cells[i, 7].Text),
                     };
 
-                    // 项目期间  ****************************************change
-                    DateTime temp3;
-                    if (DateTime.TryParse(sheet.Cells[i, 6].Text, out temp3))
-                        user.DateStart = temp3;
-                    DateTime temp4;
-                    if (DateTime.TryParse(sheet.Cells[i, 7].Text, out temp4))
-                        user.DateEnd = temp4;
-
-                    user.DelFlg = false;
-                    user.InserterCd = "139047";
-                    user.InserteTime = db.DbConectTime;
-                    user.UpdaterCd = "139047";
-                    user.UpdateTime = db.DbConectTime;
+                    // 员工号 用户名 Check
+                    if (string.IsNullOrWhiteSpace(user.CD) || string.IsNullOrWhiteSpace(user.Name)) continue;
 
                     userList.Add(user);
                 }
 
-                db.DeleteAll("delete from TB_user");
-                db.Add(userList);
+                // 删除既存
+                db.DeleteAll("delete from TB_user where ProjectCD = @ProjectCD", new List<MySqlParameter>() { new MySqlParameter("ProjectCD", pro.CD) });
+                // 添加数据
+                db.AddData(userList);
 
                 #endregion
 
                 #region Group
 
-                List<TB_Group> groupList = new List<TB_Group>();
+                // 获取Group Sheet
                 sheet = excel.GetSheet("Group");
+
+                // 数据设定
+                List<TB_Group> groupList = new List<TB_Group>();
                 for (int i = 2; i <= excel.GetMaxRow(sheet, 1); i++)
                 {
+                    // 数据设定
                     TB_Group group = new TB_Group()
                     {
                         ProjectCD = pro.CD,
                         CD = sheet.Cells[i, 1].Text,
                         Name = sheet.Cells[i, 2].Text,
                         UserCD = sheet.Cells[i, 3].Text,
+                        DateFrom = DataUtility.CDateDB(sheet.Cells[i, 4].Text),
+                        DateEnd = DataUtility.CDateDB(sheet.Cells[i, 5].Text),
                     };
 
-                    // 项目期间  ****************************************change
-                    DateTime temp5;
-                    if (DateTime.TryParse(sheet.Cells[i, 4].Text, out temp5))
-                        group.DateFrom = temp5;
-                    DateTime temp6;
-                    if (DateTime.TryParse(sheet.Cells[i, 5].Text, out temp6))
-                        group.DateEnd = temp6;
-
-                    group.DelFlg = false;
-                    group.InserterCd = "139047";
-                    group.InserteTime = db.DbConectTime;
-                    group.UpdaterCd = "139047";
-                    group.UpdateTime = db.DbConectTime;
+                    // 组号 用户名 Check
+                    if (string.IsNullOrWhiteSpace(group.CD) || string.IsNullOrWhiteSpace(group.Name)) continue;
 
                     groupList.Add(group);
                 }
-                db.DeleteAll("delete from tb_group");
-                db.Add(groupList);
+
+                // 删除既存
+                db.DeleteAll("delete from tb_group where ProjectCD = @ProjectCD", new List<MySqlParameter>() { new MySqlParameter("ProjectCD", pro.CD) });
+                // 添加数据
+                db.AddData(groupList);
 
                 #endregion
 
                 #region Function
 
-                List<TB_Function> funcList = new List<TB_Function>();
+                // 获取Function Sheet
                 sheet = excel.GetSheet("Function");
-                for (int i = 2; i <= excel.GetMaxRow(sheet, 1); i++)
+
+                // 数据设定
+                List<TB_Function> funcList = new List<TB_Function>();
+                List<TB_WbsType> wbsList = new List<TB_WbsType>();
+                for (int i = 2; i <= excel.GetMaxRow(sheet, 2); i++)
                 {
+                    // 数据设定
                     TB_Function func = new TB_Function()
                     {
                         ProjectCD = pro.CD,
@@ -191,23 +179,31 @@ namespace YsProject.Logics
                         CD = sheet.Cells[i, 2].Text,
                         Name = sheet.Cells[i, 3].Text,
                         Type = sheet.Cells[i, 4].Text,
+                        DateEnd = DataUtility.CDateDB(sheet.Cells[i, 5].Text),
                     };
 
-                    // 项目期间  ****************************************change
-                    DateTime temp7;
-                    if (DateTime.TryParse(sheet.Cells[i, 5].Text, out temp7))
-                        func.DateEnd = temp7;
+                    // 机能ID Check
+                    if (string.IsNullOrWhiteSpace(func.CD)) continue;
 
-                    func.DelFlg = false;
-                    func.InserterCd = "139047";
-                    func.InserteTime = db.DbConectTime;
-                    func.UpdaterCd = "139047";
-                    func.UpdateTime = db.DbConectTime;
+                    // 作业种类数据添加
+                    typeof(EnumDevType).GetList().ForEach(x =>
+                        wbsList.Add(new TB_WbsType()
+                        {
+                            ProjectCD = pro.CD,
+                            CD = func.CD,
+                            Type = x.Value,
+                        })
+                    );
 
                     funcList.Add(func);
                 }
-                db.DeleteAll("delete from tb_function");
-                db.Add(funcList);
+
+                // 删除既存
+                db.DeleteAll("delete from tb_function where ProjectCD = @ProjectCD", new List<MySqlParameter>() { new MySqlParameter("ProjectCD", pro.CD) });
+                db.DeleteAll("delete from tb_wbstype where ProjectCD = @ProjectCD", new List<MySqlParameter>() { new MySqlParameter("ProjectCD", pro.CD) });
+                // 添加数据
+                db.AddData(funcList);
+                db.AddData(wbsList);
 
                 #endregion
             }

@@ -68,6 +68,39 @@ namespace YsProject.Consts
     /// <summary>
     /// 开发语言
     /// </summary>
+    public enum EnumDevType
+    {
+        [Value("00"), Description("")]
+        ALL,
+        [Value("01"), Description("基本设计")]
+        BS,
+        [Value("02"), Description("基本设计检证")]
+        BS_RE,
+        [Value("03"), Description("详细设计")]
+        DL,
+        [Value("04"), Description("详细设计检证")]
+        DL_RE,
+        [Value("05"), Description("单体制造")]
+        CD,
+        [Value("06"), Description("单体制造检证")]
+        CD_RE,
+        [Value("07"), Description("单体测试")]
+        UT,
+        [Value("08"), Description("单体测试检证")]
+        UT_RE,
+        [Value("09"), Description("结合测试")]
+        IT,
+        [Value("10"), Description("结合测试检证")]
+        IT_RE,
+        [Value("11"), Description("综合测试")]
+        CT,
+        [Value("12"), Description("综合测试检证")]
+        CT_RE,
+    }
+
+    /// <summary>
+    /// 开发语言
+    /// </summary>
     public enum EnumDevLang
     {
         [Value("0"), Description("")]

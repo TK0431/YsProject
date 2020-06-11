@@ -158,6 +158,8 @@
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\ComItem.cs" />
     <Compile Include="Models\DB\BaseTable.cs" />
+    <Compile Include="Models\DB\TB_WbsDay.cs" />
+    <Compile Include="Models\DB\TB_WbsType.cs" />
     <Compile Include="Models\DB\TB_Group.cs" />
     <Compile Include="Models\DB\TB_Project.cs" />
     <Compile Include="Models\DB\TB_Type.cs" />
@@ -173,6 +175,7 @@
     <Compile Include="Utility\EPPlusUtility.cs" />
     <Compile Include="Utility\ExcelUtility.cs" />
     <Compile Include="Utility\LogUtility.cs" />
+    <Compile Include="Utility\PdfUtility.cs" />
     <Compile Include="Utility\XmlUtility.cs" />
     <Compile Include="ViewModels\Base\BaseViewModel.cs" />
     <Compile Include="ViewModels\Base\RelayCommand.cs" />

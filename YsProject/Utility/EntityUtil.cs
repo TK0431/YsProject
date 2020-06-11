@@ -231,10 +231,10 @@ namespace YsProject.Utils
             => _db.Database.SqlQuery<T>(sql, paramArray).Select(model).ToList();
 
         public T FindSingle<T>(string sql)
-            => _db.Database.SqlQuery<T>(sql).Single();
+            => _db.Database.SqlQuery<T>(sql).FirstOrDefault();
 
         public T FindSingle<T>(string sql, List<MySqlParameter> paramArray = null)
-            => _db.Database.SqlQuery<T>(sql, paramArray == null ? null : paramArray.ToArray()).Single();
+            => _db.Database.SqlQuery<T>(sql, paramArray == null ? null : paramArray.ToArray()).FirstOrDefault();
 
         /// <summary>
         /// 追加
@@ -398,48 +398,32 @@ namespace YsProject.Utils
         /// <summary>
         /// 登録
         /// </summary>
-        /// <param name="model"></param>
-        //public int Add<T>(BaseModel model, T item) where T : class
-        //{
-        //    Action<T> action = GetAddWhereAction<T>(model);
+        /// <param name = "model" ></ param >
+        public int AddData<T>(T item) where T : class
+        {
+            Action<T> action = GetAddWhereAction<T>();
 
-        //    // データ更新
-        //    action(item);
+            // データ更新
+            action(item);
 
-        //    // 登録
-        //    if (this.Add(item) < 0)
-        //    {
-        //        // 更新中排他エラー
-        //        model.ErrorList.Add("既に更新された");
-        //        this.RollBack();
-        //        return -2;
-        //    }
-
-        //    return 0;
-        //}
+            // 登録
+            return this.Add(item);
+        }
 
         /// <summary>
         /// 登録
         /// </summary>
         /// <param name="model"></param>
-        //public int Add<T>(BaseModel model, List<T> items) where T : class
-        //{
-        //    Action<T> action = GetAddWhereAction<T>(model);
+        public int AddData<T>(List<T> items) where T : class
+        {
+            Action<T> action = GetAddWhereAction<T>();
 
-        //    // データ更新
-        //    items.ForEach(x => action(x));
+            // データ更新
+            items.ForEach(x => action(x));
 
-        //    // 登録
-        //    if (this.Add(items) < 0)
-        //    {
-        //        // 更新中排他エラー
-        //        model.ErrorList.Add("既に更新された");
-        //        this.RollBack();
-        //        return -2;
-        //    }
-
-        //    return 0;
-        //}
+            // 登録
+            return this.Add(items);
+        }
 
         /// <summary>
         /// GetWhereExpression
@@ -466,22 +450,22 @@ namespace YsProject.Utils
         /// <typeparam name="M">Item</typeparam>
         /// <param name="item">Item</param>
         /// <returns></returns>
-        //private Action<T> GetAddWhereAction<T>(BaseModel model) where T : class
-        //{
-        //    ParameterExpression parameter = Expression.Parameter(typeof(T), "x");
-        //    MemberExpression member1 = Expression.Property(parameter, "delete_flg");
-        //    MemberExpression member2 = Expression.Property(parameter, "creator_cd");
-        //    MemberExpression member3 = Expression.Property(parameter, "create_date");
-        //    MemberExpression member4 = Expression.Property(parameter, "updater_cd");
-        //    MemberExpression member5 = Expression.Property(parameter, "update_date");
-        //    BlockExpression block1 = Expression.Block(Expression.Assign(member1, Expression.Constant("0", typeof(string))));
-        //    BlockExpression block2 = Expression.Block(Expression.Assign(member2, Expression.Constant(model.Session.EmpmCd, typeof(string))));
-        //    BlockExpression block3 = Expression.Block(Expression.Assign(member3, Expression.Constant(this.DbConectTime, typeof(DateTime))));
-        //    BlockExpression block4 = Expression.Block(Expression.Assign(member4, Expression.Constant(model.Session.EmpmCd, typeof(string))));
-        //    BlockExpression block5 = Expression.Block(Expression.Assign(member5, Expression.Constant(this.DbConectTime, typeof(DateTime))));
+        private Action<T> GetAddWhereAction<T>() where T : class
+        {
+            ParameterExpression parameter = Expression.Parameter(typeof(T), "x");
+            MemberExpression member1 = Expression.Property(parameter, "DelFlg");
+            MemberExpression member2 = Expression.Property(parameter, "InserterCd");
+            MemberExpression member3 = Expression.Property(parameter, "InserteTime");
+            MemberExpression member4 = Expression.Property(parameter, "UpdaterCd");
+            MemberExpression member5 = Expression.Property(parameter, "UpdateTime");
+            BlockExpression block1 = Expression.Block(Expression.Assign(member1, Expression.Constant(false, typeof(bool))));
+            BlockExpression block2 = Expression.Block(Expression.Assign(member2, Expression.Constant("000000", typeof(string))));
+            BlockExpression block3 = Expression.Block(Expression.Assign(member3, Expression.Constant(this.DbConectTime, typeof(DateTime))));
+            BlockExpression block4 = Expression.Block(Expression.Assign(member4, Expression.Constant("000000", typeof(string))));
+            BlockExpression block5 = Expression.Block(Expression.Assign(member5, Expression.Constant(this.DbConectTime, typeof(DateTime))));
 
-        //    return Expression.Lambda<Action<T>>(Expression.Block(block1, block2, block3, block4, block5), parameter).Compile();
-        //}
+            return Expression.Lambda<Action<T>>(Expression.Block(block1, block2, block3, block4, block5), parameter).Compile();
+        }
 
         /// <summary>
         /// 削除
@@ -506,6 +490,9 @@ namespace YsProject.Utils
 
         public int DeleteAll(string sql)
             => _db.Database.ExecuteSqlCommand(sql);
+
+        public int DeleteAll(string sql, List<MySqlParameter> param)
+            => _db.Database.ExecuteSqlCommand(sql, param.ToArray());
 
         /// <summary>
         /// 排他確認
