@@ -18,7 +18,7 @@ namespace YsProject.Models.DB
         [Display(Name = "机能ID"), Required, StringLength(10)]
         public string CD { get; set; }
 
-        [Display(Name = "作业种类"), Required, StringLength(2)]
+        [Display(Name = "作业种类"), Required, StringLength(3)]
         public string Type { get; set; }
 
         [Display(Name = "担当者"), StringLength(10)]

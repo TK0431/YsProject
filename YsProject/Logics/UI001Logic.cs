@@ -3,6 +3,7 @@ using OfficeOpenXml;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Net;
 using System.Security.Cryptography;
 using System.Text;
@@ -39,8 +40,49 @@ namespace YsProject.Logics
                 if (item.CD == project)
                 {
                     model.SelectedProjectItem = item;
+                    GetDataItems(model);
                     return;
                 }
+            }
+        }
+
+        public void GetDataItems(UI001ViewModel model)
+        {
+            using (EntityDao db = new EntityDao())
+            {
+                StringBuilder sql = new StringBuilder();
+                List<MySqlParameter> param = new List<MySqlParameter>();
+                sql.AppendLine("SELECT ");
+                sql.AppendLine("  @rownum := @rownum +1 AS rownum,");
+                sql.AppendLine("  B.Group,");
+                sql.AppendLine("  B.CD,");
+                sql.AppendLine("  B.Name,");
+                sql.AppendLine("  B.Type,");
+                sql.AppendLine("  B.DateEnd,");
+                sql.AppendLine("  D.Name AS Work,");
+                sql.AppendLine("  C.UserCD,");
+                sql.AppendLine("  C.DatePeFrom,");
+                sql.AppendLine("  C.DatePeEnd,");
+                sql.AppendLine("  C.DateReFrom,");
+                sql.AppendLine("  C.DateReEnd,");
+                sql.AppendLine("  C.Percent,");
+                sql.AppendLine("  C.Back");
+                sql.AppendLine("FROM (SELECT @rownum := 0) r,");
+                sql.AppendLine("TB_project AS A");
+                sql.AppendLine("INNER JOIN tb_function AS B");
+                sql.AppendLine("ON A.CD = B.ProjectCD");
+                sql.AppendLine("INNER JOIN tb_wbstype AS C");
+                sql.AppendLine("ON A.CD = C.ProjectCD");
+                sql.AppendLine("AND B.CD = C.CD");
+                sql.AppendLine("LEFT JOIN tb_type AS D");
+                sql.AppendLine("ON D.Type = '04'");
+                sql.AppendLine("AND C.Type = D.Value");
+                param.Add(new MySqlParameter("CD", model.SelectedProjectItem.CD));
+                sql.AppendLine("WHERE A.CD = @CD");
+                sql.AppendLine("ORDER BY");
+                sql.AppendLine("B.Group,B.CD,C.Type");
+
+                model.DataItems = new ObservableCollection<UI001DataItem>(db.FindAll<UI001DataItem>(sql.ToString(), param));
             }
         }
 
@@ -186,7 +228,7 @@ namespace YsProject.Logics
                     if (string.IsNullOrWhiteSpace(func.CD)) continue;
 
                     // 作业种类数据添加
-                    typeof(EnumDevType).GetList().ForEach(x =>
+                    typeof(EnumDevType).GetList(true).ForEach(x =>
                         wbsList.Add(new TB_WbsType()
                         {
                             ProjectCD = pro.CD,

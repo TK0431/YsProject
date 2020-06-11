@@ -29,6 +29,7 @@ namespace YsProject
         /// <param name="e"></param>
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
+            //UpdateEnum.Update();
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)

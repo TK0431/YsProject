@@ -78,10 +78,46 @@
         </ToolBarTray>
         <DataGrid
           Margin="16"
-          ItemsSource="{Binding Items3}"
+          ItemsSource="{Binding DataItems}"
+          AutoGenerateColumns="False"
           CanUserSortColumns="True"
           CanUserAddRows="False"
           materialDesign:DataGridAssist.CellPadding="4 2 2 2"
-          materialDesign:DataGridAssist.ColumnHeaderPadding="4 2 2 2" />
+          materialDesign:DataGridAssist.ColumnHeaderPadding="4 2 2 2" >
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="No" Binding="{Binding rownum}"/>
+                <DataGridTextColumn Header="业务组" Binding="{Binding Group}"/>
+                <DataGridTextColumn Header="机能ID" Binding="{Binding CD}"/>
+                <DataGridTextColumn Header="机能名" Binding="{Binding Name}"/>
+                <DataGridTextColumn Header="区分" Binding="{Binding Type}"/>
+                <DataGridTextColumn Header="纳品日" Binding="{Binding DateEnd}"/>
+                <DataGridTextColumn Header="作业" Binding="{Binding Work}"/>
+                <DataGridTextColumn Header="担当者" Binding="{Binding UserCD}"/>
+                <DataGridTextColumn Header="预定开始" Binding="{Binding DatePeFrom}"/>
+                <DataGridTextColumn Header="预定终了" Binding="{Binding DatePeEnd}"/>
+                <DataGridTextColumn Header="实际开始" Binding="{Binding DateReFrom}"/>
+                <DataGridTextColumn Header="实际终了" Binding="{Binding DateReEnd}"/>
+                <DataGridTextColumn Header="进度" Binding="{Binding Percent}"/>
+                <DataGridTextColumn Header="备考" Binding="{Binding Back}"/>
+                <DataGridTemplateColumn Header="修 改">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Button Content="修 改"
+                                    Command="{Binding DataContext.UpdCommand,RelativeSource={RelativeSource Mode=FindAncestor,AncestorType=DataGrid}}"
+                                    CommandParameter="{Binding ElementName=main, Path=DataContext}"/>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn Header="删 除">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Button Content="删 除"
+                                    Command="{Binding DataContext.DelCommand,RelativeSource={RelativeSource Mode=FindAncestor,AncestorType=DataGrid}}"
+                                    CommandParameter="{Binding ElementName=main, Path=DataContext}"/>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+            </DataGrid.Columns>
+        </DataGrid>
     </DockPanel>
 </local:BasePage>

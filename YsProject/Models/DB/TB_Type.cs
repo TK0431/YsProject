@@ -15,7 +15,7 @@ namespace YsProject.Models.DB
         [Display(Name = "类型"), Required, StringLength(2)]
         public string Type { get; set; }
 
-        [Display(Name = "值"), Required, StringLength(2)]
+        [Display(Name = "值"), Required, StringLength(3)]
         public string Value { get; set; }
 
         [Display(Name = "描述"), StringLength(20)]

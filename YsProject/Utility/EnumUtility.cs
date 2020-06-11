@@ -29,7 +29,7 @@ namespace YsProject.Utility
         /// <param name="code"></param>
         /// <param name="para"></param>
         /// <returns></returns>
-        public static List<EnumItem> GetList(this Type enumType)
+        public static List<EnumItem> GetList(this Type enumType,bool flgRemoveAll = false)
         {
             List<EnumItem> result = new List<EnumItem>();
 
@@ -38,6 +38,7 @@ namespace YsProject.Utility
                 EnumItem item = new EnumItem();
 
                 item.Index = (int)e;
+                if (flgRemoveAll && item.Index == 0) continue;
 
                 // Description
                 object[] objArr = e.GetType().GetField(e.ToString()).GetCustomAttributes(typeof(DescriptionAttribute), true);
