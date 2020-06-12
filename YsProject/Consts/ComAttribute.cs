@@ -23,4 +23,26 @@ namespace YsProject.Consts
             this.Value = value;
         }
     }
+
+    /// <summary>
+    /// 英语描述
+    /// </summary>
+    public class EnglishAttribute : BaseAttribute
+    {
+        public EnglishAttribute(string value)
+        {
+            this.Value = value;
+        }
+    }
+
+    /// <summary>
+    /// 日语描述
+    /// </summary>
+    public class JapaneseAttribute : BaseAttribute
+    {
+        public JapaneseAttribute(string value)
+        {
+            this.Value = value;
+        }
+    }
 }

@@ -44,7 +44,17 @@ namespace YsProject.Utility
         /// <param name="code"></param>
         /// <param name="parameters"></param>
         /// <returns></returns>
-        public static Dictionary<string, string> GetRecordValue(string key)
+        public static string GetXmValue(string key)
+            => XElement.Load(AppDomain.CurrentDomain.BaseDirectory + @"\setting.xml")
+            .Element(key).Attribute("value").Value
+
+        /// <summary>
+        /// Net-KINDサーバーのIP取得
+        /// </summary>
+        /// <param name="code"></param>
+        /// <param name="parameters"></param>
+        /// <returns></returns>
+        public static Dictionary<string, string> GetXmValues(string key)
         {
             Dictionary<string, string> result = new Dictionary<string, string>();
             XElement ex = XElement.Load(AppDomain.CurrentDomain.BaseDirectory + @"\setting.xml");

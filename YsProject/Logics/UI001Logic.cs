@@ -30,7 +30,7 @@ namespace YsProject.Logics
             }
 
             // 从Xml文件中获取上次选择项目
-            Dictionary<string, string> dic = ComUtility.GetRecordValue(model.Page.ToString());
+            Dictionary<string, string> dic = ComUtility.GetXmValues(model.Page.ToString());
             string project = dic["project"];
             if (string.IsNullOrWhiteSpace(project)) return;
 

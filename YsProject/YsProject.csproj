@@ -158,10 +158,6 @@
     <Compile Include="Consts\ComEnum.cs" />
     <Compile Include="Logics\UI001Logic.cs" />
     <Compile Include="Logics\UI202Logic.cs" />
-    <Compile Include="Migrations\202006111319162_d.cs" />
-    <Compile Include="Migrations\202006111319162_d.designer.cs">
-      <DependentUpon>202006111319162_d.cs</DependentUpon>
-    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\ComItem.cs" />
     <Compile Include="Models\DB\BaseTable.cs" />
@@ -254,11 +250,15 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Styles\en-us.xaml">
+    <Page Include="Styles\LanguageEN.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Styles\zh-cn.xaml">
+    <Page Include="Styles\LanguageJP.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Styles\LanguageCN.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -308,9 +308,6 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <EmbeddedResource Include="Migrations\202006111319162_d.resx">
-      <DependentUpon>202006111319162_d.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>

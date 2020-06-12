@@ -1,9 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <setting>
-  <connectionString></connectionString>
-  <app>
-    <language>0</language>
-  </app>
+  <language value="CN"/>
   <UI001 name="project" value="3719020009"/>
   <UI902 name="file" value="abc"/>
   <UI902 name="reverse" value="True"/>

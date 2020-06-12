@@ -28,7 +28,7 @@ namespace YsProject.Pages
 
         private void BasePage_Loaded(object sender, System.Windows.RoutedEventArgs e)
         {
-            Dictionary<string, string> dic = ComUtility.GetRecordValue(_model.Page.ToString());
+            Dictionary<string, string> dic = ComUtility.GetXmValues(_model.Page.ToString());
 
             _model.FileDictionary = dic["file"];
             _model.ReverseFlg = dic["reverse"].ToUpper() == "TRUE" ? true : false;

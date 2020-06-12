@@ -41,7 +41,19 @@ namespace YsProject.Utility
                 if (flgRemoveAll && item.Index == 0) continue;
 
                 // Description
-                object[] objArr = e.GetType().GetField(e.ToString()).GetCustomAttributes(typeof(DescriptionAttribute), true);
+                object[] objArr = null;
+                switch (App.Language)
+                {
+                    case EnumLanguage.CN:
+                        objArr = e.GetType().GetField(e.ToString()).GetCustomAttributes(typeof(DescriptionAttribute), true);
+                        break;
+                    case EnumLanguage.EN:
+                        objArr = e.GetType().GetField(e.ToString()).GetCustomAttributes(typeof(EnglishAttribute), true);
+                        break;
+                    default:
+                        objArr = e.GetType().GetField(e.ToString()).GetCustomAttributes(typeof(JapaneseAttribute), true);
+                        break;
+                }
                 if (objArr != null && objArr.Length > 0)
                 {
                     DescriptionAttribute da = objArr[0] as DescriptionAttribute;
