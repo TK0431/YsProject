@@ -74,9 +74,11 @@ namespace YsProject.Logics
                 sql.AppendLine("INNER JOIN tb_wbstype AS C");
                 sql.AppendLine("ON A.CD = C.ProjectCD");
                 sql.AppendLine("AND B.CD = C.CD");
-                sql.AppendLine("LEFT JOIN tb_type AS D");
+                sql.AppendLine("INNER JOIN tb_type AS D");
                 sql.AppendLine("ON D.Type = '04'");
                 sql.AppendLine("AND C.Type = D.Value");
+                param.Add(new MySqlParameter("Language", App.Language));
+                sql.AppendLine("AND D.Language = @Language");
                 param.Add(new MySqlParameter("CD", model.SelectedProjectItem.CD));
                 sql.AppendLine("WHERE A.CD = @CD");
                 sql.AppendLine("ORDER BY");
@@ -141,7 +143,7 @@ namespace YsProject.Logics
                     string md5 = ComUtility.GetMD5(string.IsNullOrWhiteSpace(sheet.Cells[i, 3].Text) ? "123" : sheet.Cells[i, 3].Text);
 
                     // 权限
-                    int level = DataUtility.CIntDB(sheet.Cells[i, 5].Text, 1);
+                    int level = DataUtility.CIntDB(sheet.Cells[i, 6].Text, 1);
                     if (level <= 0 || level > 4) level = 1;
 
                     // 数据设定
@@ -152,9 +154,10 @@ namespace YsProject.Logics
                         Name = sheet.Cells[i, 2].Text,
                         Password = md5,
                         IP = DataUtility.CIPDB(sheet.Cells[i, 4].Text),
+                        GroupId = DataUtility.CStrDB(sheet.Cells[i, 5].Text),
                         Level = level,
-                        DateStart = DataUtility.CDateDB(sheet.Cells[i, 6].Text),
-                        DateEnd = DataUtility.CDateDB(sheet.Cells[i, 7].Text),
+                        DateStart = DataUtility.CDateDB(sheet.Cells[i, 7].Text),
+                        DateEnd = DataUtility.CDateDB(sheet.Cells[i, 8].Text),
                     };
 
                     // 员工号 用户名 Check

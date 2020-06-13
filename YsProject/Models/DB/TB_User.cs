@@ -45,8 +45,8 @@ namespace YsProject.Models.DB
         public Map_TB_User() : base()
         {
             // Index
-            Property(t => t.ProjectCD).HasColumnAnnotation("Index", new IndexAnnotation(new IndexAttribute("TB_User_Index1", 0) { IsUnique = true }));
-            Property(t => t.CD).HasColumnAnnotation("Index", new IndexAnnotation(new IndexAttribute("TB_User_Index1", 1) { IsUnique = true }));
+            Property(t => t.ProjectCD).HasColumnAnnotation("Index", new IndexAnnotation(new IndexAttribute("TB_User_Index1", 0)));
+            Property(t => t.CD).HasColumnAnnotation("Index", new IndexAnnotation(new IndexAttribute("TB_User_Index1", 1)));
             Property(t => t.IP).HasColumnAnnotation("Index", new IndexAnnotation(new IndexAttribute("TB_User_Index2")));
         }
     }

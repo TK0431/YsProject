@@ -46,7 +46,7 @@ namespace YsProject.Utility
         /// <returns></returns>
         public static string GetXmValue(string key)
             => XElement.Load(AppDomain.CurrentDomain.BaseDirectory + @"\setting.xml")
-            .Element(key).Attribute("value").Value
+            .Element(key).Attribute("value").Value;
 
         /// <summary>
         /// Net-KINDサーバーのIP取得
@@ -170,8 +170,11 @@ namespace YsProject.Utility
             if ((value == null || IsDBNull(value))) return failValue;
 
             // DateTimeへの変更
-            DateTime? resultDate = value as DateTime?;
-            return resultDate == null ? failValue : resultDate;
+            DateTime resultDate;
+            if (DateTime.TryParse(value.ToString(),out resultDate))
+                return resultDate as DateTime?;
+            else
+                return failValue;
         }
 
         /// <summary>

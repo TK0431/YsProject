@@ -38,6 +38,9 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>Resources\ai_64.ico</ApplicationIcon>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="BouncyCastle.Crypto, Version=1.8.3.0, Culture=neutral, PublicKeyToken=0e99375e54769942">
       <HintPath>..\packages\BouncyCastle.1.8.3.1\lib\BouncyCastle.Crypto.dll</HintPath>
@@ -87,6 +90,9 @@
     </Reference>
     <Reference Include="Renci.SshNet, Version=2016.1.0.0, Culture=neutral, PublicKeyToken=1cee9f8bde3db106, processorArchitecture=MSIL">
       <HintPath>..\packages\SSH.NET.2016.1.0\lib\net40\Renci.SshNet.dll</HintPath>
+    </Reference>
+    <Reference Include="ShowMeTheXAML, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\ShowMeTheXAML.1.0.12\lib\net45\ShowMeTheXAML.dll</HintPath>
     </Reference>
     <Reference Include="Spire.License, Version=1.3.8.46, Culture=neutral, PublicKeyToken=b1144360237c8b3f, processorArchitecture=MSIL">
       <HintPath>..\packages\FreeSpire.XLS.10.1.0\lib\net46\Spire.License.dll</HintPath>
@@ -156,6 +162,8 @@
     <Compile Include="Consts\ComAttribute.cs" />
     <Compile Include="Consts\ComConst.cs" />
     <Compile Include="Consts\ComEnum.cs" />
+    <Compile Include="Logics\MainWindowLogic.cs" />
+    <Compile Include="Logics\WD001Logic.cs" />
     <Compile Include="Logics\UI001Logic.cs" />
     <Compile Include="Logics\UI202Logic.cs" />
     <Compile Include="Migrations\Configuration.cs" />
@@ -178,18 +186,23 @@
     <Compile Include="Utility\EPPlusUtility.cs" />
     <Compile Include="Utility\ExcelUtility.cs" />
     <Compile Include="Utility\LogUtility.cs" />
+    <Compile Include="Utility\PasswordBoxBindingHelper.cs" />
     <Compile Include="Utility\PdfUtility.cs" />
     <Compile Include="Utility\XmlUtility.cs" />
     <Compile Include="ViewModels\Base\BaseViewModel.cs" />
     <Compile Include="ViewModels\Base\RelayCommand.cs" />
     <Compile Include="ViewModels\Base\RelayTCommand.cs" />
     <Compile Include="ViewModels\MainWindowViewModel.cs" />
+    <Compile Include="ViewModels\WD001ViewModel.cs" />
     <Compile Include="ViewModels\UI001ViewModel.cs" />
     <Compile Include="ViewModels\UI002ViewModel.cs" />
     <Compile Include="ViewModels\UI201ViewModel.cs" />
     <Compile Include="ViewModels\UI202ViewModel.cs" />
     <Compile Include="ViewModels\UI902ViewModel.cs" />
     <Compile Include="ViewModels\UI903ViewModel.cs" />
+    <Compile Include="Windows\WD001.xaml.cs">
+      <DependentUpon>WD001.xaml</DependentUpon>
+    </Compile>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -261,6 +274,10 @@
     <Page Include="Styles\LanguageCN.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Windows\WD001.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
   <ItemGroup>
@@ -336,6 +353,11 @@
     <Content Include="chromedriver.exe">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Resource Include="Resources\ai_128.ico" />
+    <Resource Include="Resources\ai_16.ico" />
+    <Resource Include="Resources\ai_32.ico" />
+    <Resource Include="Resources\ai_48.ico" />
+    <Resource Include="Resources\ai_64.ico" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

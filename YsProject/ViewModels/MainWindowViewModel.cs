@@ -1,6 +1,8 @@
 ﻿using System.Collections.ObjectModel;
 using System.Windows.Controls;
+using System.Windows.Input;
 using YsProject.Consts;
+using YsProject.Logics;
 using YsProject.Models;
 using YsProject.Pages;
 using YsProject.Utility;
@@ -13,6 +15,11 @@ namespace YsProject.ViewModels
     /// </summary>
     public class MainWindowViewModel : BaseViewModel
     {
+        /// <summary>
+        /// Logic
+        /// </summary>
+        private MainWindowLogic _logic = new MainWindowLogic();
+
         /// <summary>
         /// 主Page
         /// </summary>
@@ -37,6 +44,11 @@ namespace YsProject.ViewModels
         /// Web 菜单
         /// </summary>
         public ObservableCollection<EnumItem> CodItems { get; set; }
+
+        /// <summary>
+        /// 上传Excel
+        /// </summary>
+        public ICommand Login { get; set; }
 
         /// <summary>
         /// 构造
@@ -68,6 +80,8 @@ namespace YsProject.ViewModels
                 PageEnum.UI902.GetItem(), //
                 PageEnum.UI903.GetItem(), //
             };
+
+            _logic.Init(this);
         }
     }
 }

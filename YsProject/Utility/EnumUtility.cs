@@ -46,18 +46,28 @@ namespace YsProject.Utility
                 {
                     case EnumLanguage.CN:
                         objArr = e.GetType().GetField(e.ToString()).GetCustomAttributes(typeof(DescriptionAttribute), true);
+                        if (objArr != null && objArr.Length > 0)
+                        {
+                            DescriptionAttribute da = objArr[0] as DescriptionAttribute;
+                            item.Description = da.Description;
+                        }
                         break;
                     case EnumLanguage.EN:
                         objArr = e.GetType().GetField(e.ToString()).GetCustomAttributes(typeof(EnglishAttribute), true);
+                        if (objArr != null && objArr.Length > 0)
+                        {
+                            EnglishAttribute da = objArr[0] as EnglishAttribute;
+                            item.Description = da.Value;
+                        }
                         break;
                     default:
                         objArr = e.GetType().GetField(e.ToString()).GetCustomAttributes(typeof(JapaneseAttribute), true);
+                        if (objArr != null && objArr.Length > 0)
+                        {
+                            JapaneseAttribute da = objArr[0] as JapaneseAttribute;
+                            item.Description = da.Value;
+                        }
                         break;
-                }
-                if (objArr != null && objArr.Length > 0)
-                {
-                    DescriptionAttribute da = objArr[0] as DescriptionAttribute;
-                    item.Description = da.Description;
                 }
 
                 // DBValue

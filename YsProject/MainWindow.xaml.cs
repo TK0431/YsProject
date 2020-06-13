@@ -1,9 +1,15 @@
-﻿using System.Windows;
+﻿using MaterialDesignThemes.Wpf;
+using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Controls;
 using YsProject.Consts;
 using YsProject.Models;
 using YsProject.Pages;
 using YsProject.ViewModels;
+using YsProject.Windows;
+using ShowMeTheXAML;
+using System.Diagnostics;
+using System;
 
 namespace YsProject
 {
@@ -84,6 +90,23 @@ namespace YsProject
             expApp.IsExpanded = false;
             expWeb.IsExpanded = false;
             MenuToggleButton.IsChecked = false;
+        }
+
+        private void Login_Click(object sender, RoutedEventArgs e)
+        {
+
+            var messageQueue = SnackbarThree.MessageQueue;
+
+            //the message queue can be called from any thread
+            Task.Factory.StartNew(() => messageQueue.Enqueue("abc", "OK", delegate() { })) ;
+
+            var view = new WD001();
+
+            //show the dialog
+            view.Owner = this;
+            view.WindowStartupLocation = WindowStartupLocation.CenterOwner;
+            view.ShowDialog();
+
         }
     }
 }

@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        xmlns:smtx="clr-namespace:ShowMeTheXAML;assembly=ShowMeTheXAML"
         xmlns:local="clr-namespace:YsProject"
         mc:Ignorable="d"
         TextElement.Foreground="{DynamicResource MaterialDesignBody}"
@@ -18,6 +19,7 @@
     <WindowChrome.WindowChrome>
         <WindowChrome CaptionHeight="70" ResizeBorderThickness="0"/>
     </WindowChrome.WindowChrome>
+    <Grid>
     <materialDesign:DialogHost>
         <materialDesign:DrawerHost IsLeftDrawerOpen="{Binding ElementName=MenuToggleButton, Path=IsChecked}">
             <materialDesign:DrawerHost.LeftDrawerContent>
@@ -102,21 +104,26 @@
                                 <StackPanel>
                                     <Button Content="Info"/>
                                     <Separator/>
-                                    <Button Content="UserInfo"/>
+                                    <Button Content="UserInfo" Click="Login_Click"/>
                                     <Separator/>
                                     <Button Content="Close" Click="Button_Click"/>
                                 </StackPanel>
                             </materialDesign:PopupBox>
                         </materialDesign:Badged>
                         <!-- Title -->
-                        <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="22" Text="Ys Project"/>
+                        <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="22" Text="{StaticResource MainTitle}"/>
                     </DockPanel>
                 </materialDesign:ColorZone>
-                <materialDesign:Snackbar MessageQueue="{materialDesign:MessageQueue}" DockPanel.Dock="Bottom" />
                 <!--<ScrollViewer materialDesign:ScrollViewerAssist.IsAutoHideEnabled="True">-->
                 <Frame Content="{Binding MainPage}" NavigationUIVisibility="Hidden"/>
                 <!--</ScrollViewer>-->
             </DockPanel>
         </materialDesign:DrawerHost>
     </materialDesign:DialogHost>
+    <smtx:XamlDisplay VerticalContentAlignment="Bottom" HorizontalContentAlignment="Center">
+            <materialDesign:Snackbar MessageQueue="{materialDesign:MessageQueue}" x:Name="SnackbarThree">
+                <materialDesign:SnackbarMessage Content="Default - accent" ActionContent="确认" />
+            </materialDesign:Snackbar>
+    </smtx:XamlDisplay>
+    </Grid>
 </Window>

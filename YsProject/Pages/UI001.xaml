@@ -102,7 +102,7 @@
                 <DataGridTemplateColumn Header="修 改">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <Button Content="修 改"
+                            <Button Content="修 改" Style="{StaticResource MaterialDesignFlatButton}" Margin="0" Padding="0"
                                     Command="{Binding DataContext.UpdCommand,RelativeSource={RelativeSource Mode=FindAncestor,AncestorType=DataGrid}}"
                                     CommandParameter="{Binding ElementName=main, Path=DataContext}"/>
                         </DataTemplate>
@@ -111,7 +111,7 @@
                 <DataGridTemplateColumn Header="删 除">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <Button Content="删 除"
+                            <Button Content="删 除" Style="{StaticResource MaterialDesignFlatButton}" Margin="0" Padding="0"
                                     Command="{Binding DataContext.DelCommand,RelativeSource={RelativeSource Mode=FindAncestor,AncestorType=DataGrid}}"
                                     CommandParameter="{Binding ElementName=main, Path=DataContext}"/>
                         </DataTemplate>
