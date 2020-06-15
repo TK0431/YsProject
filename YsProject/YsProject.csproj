@@ -177,6 +177,7 @@
     <Compile Include="Models\DB\TB_Function.cs" />
     <Compile Include="Models\DB\TB_User.cs" />
     <Compile Include="Models\EFCoreDbContext.cs" />
+    <Compile Include="Utility\SeleniumUtiltity.cs" />
     <Compile Include="Utility\CheckUtil.cs" />
     <Compile Include="Utility\ComFilter.cs" />
     <Compile Include="Utility\CommonUtil.cs" />
