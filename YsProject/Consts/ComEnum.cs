@@ -23,6 +23,8 @@ namespace YsProject.Consts
         Type_04,
         [Value("05"), Description("语言"), English("Language"), Japanese("言語")]
         Type_05,
+        [Value("06"), Description("消息"), English("Message"), Japanese("メッセージ")]
+        Type_06
     }
 
     /// <summary>
@@ -141,6 +143,17 @@ namespace YsProject.Consts
     }
 
     /// <summary>
+    /// 消息
+    /// </summary>
+    public enum EnumMessage
+    {
+        [Value("00"), Description(""), English(""), Japanese("")]
+        ALL,
+        [Value("E01"), Description("Excel表【{0}】不存在"), English("Sheet【{0}】not exist"), Japanese("シート【{0}】存在なし")]
+        E01,
+    }
+
+    /// <summary>
     /// 将枚举更新到数据库
     /// </summary>
     public static class UpdateEnum
@@ -156,6 +169,7 @@ namespace YsProject.Consts
                 AddDatas(db, typeof(EnumDevLang), EnumType.Type_03.GetValue());
                 AddDatas(db, typeof(EnumDevType), EnumType.Type_04.GetValue());
                 AddDatas(db, typeof(EnumLanguage), EnumType.Type_05.GetValue());
+                AddDatas(db, typeof(EnumMessage), EnumType.Type_06.GetValue());
             }
         }
 

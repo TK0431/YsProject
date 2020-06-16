@@ -19,8 +19,10 @@ namespace YsProject.Utility
         /// <param name="code"></param>
         /// <param name="parameters"></param>
         /// <returns></returns>
-        //public static string GetMessage(this MessageCode code, params string[] para)
-        //    => para.Length > 0 ? string.Format(code.GetDescription(), para) : code.GetDescription();
+        public static string GetMessage(this EnumMessage code, params string[] para)
+        { 
+            return para.Length > 0 ? string.Format(code.GetDescription(), para) : code.GetDescription();
+        }
 
         /// <summary>
         /// EnumのDescriptionを取得
@@ -139,10 +141,29 @@ namespace YsProject.Utility
             MemberInfo[] memberInfos = type.GetMember(code.ToString());
             if (memberInfos != null && memberInfos.Length > 0)
             {
-                DescriptionAttribute[] attrs = memberInfos[0].GetCustomAttributes(typeof(DescriptionAttribute), false) as DescriptionAttribute[];
-                if (attrs != null && attrs.Length > 0)
+                switch (App.Language)
                 {
-                    return attrs[0].Description;
+                    case EnumLanguage.EN:
+                        EnglishAttribute[] attrs0 = memberInfos[0].GetCustomAttributes(typeof(EnglishAttribute), false) as EnglishAttribute[];
+                        if (attrs0 != null && attrs0.Length > 0)
+                        {
+                            return attrs0[0].Value;
+                        }
+                        break;
+                    case EnumLanguage.JP:
+                        JapaneseAttribute[] attrs1 = memberInfos[0].GetCustomAttributes(typeof(JapaneseAttribute), false) as JapaneseAttribute[];
+                        if (attrs1 != null && attrs1.Length > 0)
+                        {
+                            return attrs1[0].Value;
+                        }
+                        break;
+                    default:
+                        DescriptionAttribute[] attrs2 = memberInfos[0].GetCustomAttributes(typeof(DescriptionAttribute), false) as DescriptionAttribute[];
+                        if (attrs2 != null && attrs2.Length > 0)
+                        {
+                            return attrs2[0].Description;
+                        }
+                        break;
                 }
             }
             return code.ToString();

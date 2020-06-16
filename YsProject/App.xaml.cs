@@ -26,6 +26,11 @@ namespace YsProject
         /// </summary>
         public static TB_User LoginUser { get; set; }
 
+        /// <summary>
+        /// 语言
+        /// </summary>
+        public static List<string> ErrorList { get; set; } = new List<string>();
+
         protected override void OnStartup(StartupEventArgs e)
         {
             // 语言获取

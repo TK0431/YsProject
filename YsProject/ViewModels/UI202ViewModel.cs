@@ -17,6 +17,8 @@ namespace YsTool.ViewModels
         /// </summary>
         private UI202Logic _logic = new UI202Logic();
 
+        public int MyProperty { get; set; }
+
         /// <summary>
         /// 检索按钮
         /// </summary>

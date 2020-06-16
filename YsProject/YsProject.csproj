@@ -167,6 +167,7 @@
     <Compile Include="Logics\UI001Logic.cs" />
     <Compile Include="Logics\UI202Logic.cs" />
     <Compile Include="Migrations\Configuration.cs" />
+    <Compile Include="Models\SeleniumModel.cs" />
     <Compile Include="Models\ComItem.cs" />
     <Compile Include="Models\DB\BaseTable.cs" />
     <Compile Include="Models\DB\TB_WbsDay.cs" />

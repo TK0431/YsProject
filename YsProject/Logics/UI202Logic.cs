@@ -24,16 +24,13 @@ namespace YsProject.Logics
         /// <param name="model"></param>
         public void Test(UI202ViewModel model)
         {
-            ChromeOptions options = new ChromeOptions();
-            options.AddExcludedArgument("enable-automation");
-            options.AddArguments("--test-type", "--ignore-certificate-errors");
-            options.AddAdditionalCapability("useAutomationExtension", false);
-
-            IWebDriver driver = new ChromeDriver(options);
+            using (ChromeHelper driver = new ChromeHelper())
+            {
+                
+            }
             //ChromeDriverService chromeDriverService =  ChromeDriverService.CreateDefaultService();
             //IWebDriver driver = new ChromeDriver(chromeDriverService, options);
-            try
-            {
+
                 //driver.Navigate().GoToUrl("https://www.baidu.com");
                 driver.Navigate().GoToUrl("https://www.baidu.com/s?ie=utf-8&f=8&rsv_bp=1&rsv_idx=1&tn=baidu&wd=%E6%B7%98%E5%AE%9D&fenlei=256&oq=%2526lt%253BhromeDriverService%2520%25E6%2588%25AA%25E5%258F%2596%25E5%2585%25A8%25E5%259B%25BE&rsv_pq=ab4c2a3f0000b2a4&rsv_t=3f29GMzEjU17XzJVbFmD5c2xTyR7ZIQscBfcf1NTtWU1JSJSDsHKU12gjFA&rqlang=cn&rsv_enter=0&rsv_dl=tb&rsv_btype=t&inputT=2501&rsv_sug3=108&rsv_sug1=63&rsv_sug7=100&rsv_sug2=0&rsv_sug4=3051");
                 IWebElement e1 = driver.FindElement(By.Name("wd"));
@@ -101,15 +98,7 @@ namespace YsProject.Logics
 
                 //    IWebElement e6 = driver.FindElement(By.CssSelector("input.border.border-glay.form-control-sm.form-control.datePickerCustom"));
                 //    e6.SendKeys("2019/01/03");
-            }
-            catch (Exception e)
-            {
-                MessageBox.Show(e.Message);
-            }
-            finally
-            {
-                driver.Quit();
-            }
+
         }
 
 

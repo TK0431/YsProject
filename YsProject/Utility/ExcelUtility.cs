@@ -124,10 +124,8 @@ namespace YsProject.Utils
         /// <returns></returns>
         public int GetMaxRow(ExcelWorksheet sheet, int col)
         {
-            for (int i = 1; i <= sheet.Cells.Rows; i++)
-                if (string.IsNullOrWhiteSpace(sheet.Cells[i, col].Text))
-                    return i-1;
-            return sheet.Cells.Rows;
+            ExcelRangeBase cell = sheet.Cells.LastOrDefault(c => c.Start.Column == col);
+            return cell == null ? 0 : cell.Rows;
         }
 
         /// <summary>
