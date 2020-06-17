@@ -87,6 +87,37 @@ namespace YsProject.Utility
         }
 
         /// <summary>
+        /// EnumのDescriptionを取得
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="code"></param>
+        /// <param name="para"></param>
+        /// <returns></returns>
+        public static List<EnumItem> GetValues(this Type enumType)
+        {
+            List<EnumItem> result = new List<EnumItem>();
+
+            foreach (var e in Enum.GetValues(enumType))
+            {
+                EnumItem item = new EnumItem();
+
+                item.Index = (int)e;
+
+                // DBValue
+                object[] dbValueArr = e.GetType().GetField(e.ToString()).GetCustomAttributes(typeof(ValueAttribute), true);
+                if (dbValueArr != null && dbValueArr.Length > 0)
+                {
+                    ValueAttribute da = dbValueArr[0] as ValueAttribute;
+                    item.Value = da.Value;
+                }
+
+                result.Add(item);
+            }
+
+            return result;
+        }
+
+        /// <summary>
         /// 
         /// </summary>
         /// <typeparam name="T"></typeparam>

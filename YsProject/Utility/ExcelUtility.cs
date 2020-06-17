@@ -118,17 +118,6 @@ namespace YsProject.Utils
             => _excel.Workbook.Worksheets[sheetName];
 
         /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="sheetName"></param>
-        /// <returns></returns>
-        public int GetMaxRow(ExcelWorksheet sheet, int col)
-        {
-            ExcelRangeBase cell = sheet.Cells.LastOrDefault(c => c.Start.Column == col);
-            return cell == null ? 0 : cell.Rows;
-        }
-
-        /// <summary>
         /// Save
         /// </summary>
         public void Save()
@@ -147,6 +136,31 @@ namespace YsProject.Utils
         /// <param name="file"></param>
         public void SaveAs(Stream file)
             => _excel.SaveAs(file);
+    }
+
+    public static class ExcelHelper
+    {
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sheetName"></param>
+        /// <returns></returns>
+        public static int GetMaxRow(this ExcelWorksheet sheet, int col)
+        {
+            ExcelRangeBase cell = sheet.Cells.LastOrDefault(c => c.Start.Column == col);
+            return cell == null ? 0 : cell.Rows;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sheetName"></param>
+        /// <returns></returns>
+        public static int GetMaxColumn(this ExcelWorksheet sheet, int row)
+        {
+            ExcelRangeBase cell = sheet.Cells.LastOrDefault(c => c.Start.Row == row);
+            return cell == null ? 0 : cell.Columns;
+        }
     }
 
     public class PdfUtiliity
